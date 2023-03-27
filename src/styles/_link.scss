@@ -1,0 +1,37 @@
+.link {
+    &:link,
+    &:visited {
+        text-decoration: none;
+        font-family: 'manrope';
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 32px;
+        letter-spacing: -0.16px;
+
+        transition: color 0.15s, background-color 0.15s;
+    }
+
+    &--outline {
+        &:link,
+        &:visited {
+            color: var(--color-white);
+            border-bottom: 3px solid var(--color-green);
+        }
+
+        &:hover {
+            color: var(--color-green);
+        }
+    }
+
+    &--filled {
+        &:link,
+        &:visited {
+            padding: 12px 24px 11px 23px;
+            color: var(--color-dark-purple);
+            background-color: var(--color-green);
+        }
+
+        &:hover {
+        }
+    }
+}
