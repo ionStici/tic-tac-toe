@@ -9,61 +9,147 @@
             name="description"
             content="Workit landing page (Frontend mentor solution)"
         />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Manrope&display=swap"
-            rel="stylesheet"
-        />
         <title>Workit landing page | Frontend Mentor</title>
         <link rel="stylesheet" href="./src/styles/main.css" />
     </head>
     <body>
         <main class="main">
-            <header class="header"></header>
+            <header class="header">
+                <div class="header__wrapper">
+                    <img src="./src/assets/images/logo-light.svg" alt="Logo" />
+                    <a class="link link--outline" href="#">Apply for access</a>
+                </div>
+            </header>
 
-            <section class="hero"></section>
+            <section class="hero">
+                <div class="hero__wrapper">
+                    <img
+                        class="hero__pt-left"
+                        src="./src/assets/images/bg-pattern-1.svg"
+                        alt=""
+                        role="none"
+                    />
+                    <img
+                        class="hero__pt-right"
+                        src="./src/assets/images/bg-pattern-2.svg"
+                        alt=""
+                        role="none"
+                    />
 
-            <section class="features"></section>
+                    <div class="hero__content">
+                        <h1 class="hero__title">
+                            Data <span>tailored</span> to your needs.
+                        </h1>
+                        <a class="link link--filled" href="#">Learn more</a>
+                    </div>
 
-            <section class="cta"></section>
+                    <div class="hero__img-box">
+                        <img
+                            class="hero__img"
+                            src="./src/assets/images/image-hero.webp"
+                            alt="Smartphone displaying an application"
+                        />
+                    </div>
+                </div>
+            </section>
 
-            <footer class="footer"></footer>
+            <section class="fts">
+                <div class="fts__wrapper">
+                    <div class="fts__feature">
+                        <span class="fts__num">1</span>
+                        <h2 class="fts__title">Actionable insights</h2>
+                        <p class="fts__text">
+                            Optimize your products, improve customer
+                            satisfaction and stay ahead of the competition with
+                            our product data analytics.
+                        </p>
+                    </div>
+
+                    <div class="fts__feature">
+                        <span class="fts__num">2</span>
+                        <h2 class="fts__title">Data-driven decisions</h2>
+                        <p class="fts__text">
+                            Make data-driven decisions with our product data
+                            analytics. Our AI-generated reports help you unlock
+                            insights hidden in your product data.
+                        </p>
+                    </div>
+
+                    <div class="fts__feature">
+                        <span class="fts__num">3</span>
+                        <h2 class="fts__title">Always affordable</h2>
+                        <p class="fts__text">
+                            Always affordable pricing that scales with your
+                            business. Get top-quality product data analytics
+                            services without hidden costs or unexpected fees.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta">
+                <img
+                    class="cta__pt"
+                    src="./src/assets/images/bg-pattern-3.svg"
+                    alt=""
+                    role="none"
+                />
+
+                <div class="cta__img-box">
+                    <img
+                        class="cta__img"
+                        src="./src/assets/images/image-founder.webp"
+                        alt="Founder in person"
+                    />
+                </div>
+
+                <div>
+                    <h2 class="cta__h2">Be the first to test</h2>
+                    <p class="cta__text">
+                        Hi, I'm Louis Graham, the founder of the company. Book a
+                        demo call with me to become a beta tester for our app
+                        and kickstart your company. Apply for access below and
+                        I’ll be in touch to schedule a call.
+                    </p>
+                    <a class="link link--filled" href="#">Apply for access</a>
+                </div>
+            </section>
+
+            <footer class="footer">
+                <div class="footer__wrapper">
+                    <img src="./src/assets/images/logo-dark.svg" alt="" />
+
+                    <ul>
+                        <li>
+                            <a href="https://www.facebook.com/" target="_blank">
+                                <img
+                                    src="./src/assets/images/icon-facebook.svg"
+                                    alt="Facebook"
+                                />
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/home" target="_blank">
+                                <img
+                                    src="./src/assets/images/icon-twitter.svg"
+                                    alt="Twitter"
+                                />
+                            </a>
+                        </li>
+                        <li>
+                            <a
+                                href="https://www.instagram.com/"
+                                target="_blank"
+                            >
+                                <img
+                                    src="./src/assets/images/icon-instagram.svg"
+                                    alt="Instagram"
+                                />
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </footer>
         </main>
-
-        <!-- Apply for access
-
-  Data tailored to your needs.
-
-  Learn more
-  
-  1
-
-  Actionable insights
-  
-  Optimize your products, improve customer satisfaction and stay ahead of the competition 
-  with our product data analytics.
-
-  2
-
-  Data-driven decisions
-
-  Make data-driven decisions with our product data analytics. Our AI-generated reports help 
-  you unlock insights hidden in your product data.
-
-  3
-
-  Always affordable
-
-  Always affordable pricing that scales with your business. Get top-quality product data 
-  analytics services without hidden costs or unexpected fees.
-
-  Be the first to test
-
-  Hi, I'm Louis Graham, the founder of the company. Book a demo call with me to become a 
-  beta tester for our app and kickstart your company. Apply for access below and I’ll be 
-  in touch to schedule a call.
-
-  Apply for access -->
     </body>
 </html>

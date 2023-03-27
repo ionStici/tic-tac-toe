@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "manrope";
+  src: url(./../assets/fonts/manrope/Manrope-VariableFont_wght.ttf);
+}
+@font-face {
+  font-family: "fraunces";
+  src: url(./../assets/fonts/fraunces/Fraunces-VariableFont_SOFTWONKopszwght.ttf);
+}
 * {
   margin: 0;
   padding: 0;
