@@ -1,26 +1,15 @@
 .hero {
+    display: none;
     background-color: var(--color-dark-purple);
 
     &__wrapper {
         position: relative;
 
-        &::after {
-            content: '';
-
-            position: absolute;
-            z-index: 1;
-            left: 0;
-            bottom: 0;
-
-            width: 100vw;
-            padding: 50px;
-
-            background-image: radial-gradient(
-                150% 100% at 50% 10%,
-                var(--color-dark-purple) 90%,
-                var(--color-white) 90%
-            );
-        }
+        background-image: radial-gradient(
+            150% 100% at 50% 10%,
+            var(--color-dark-purple) 90%,
+            var(--color-white) 90%
+        );
     }
 
     &__pt-left,
