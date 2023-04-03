@@ -10,19 +10,17 @@ import icon_x_outline from './assets/icon-x-outline.svg';
 import restart from './assets/icon-restart.svg';
 import logo from './assets/logo.svg';
 
-import { ButtonReset } from './components/Buttons';
 import NewGame from './components/NewGame';
 import Prompt from './components/Prompt';
+import Game from './components/Game';
 
 const icons = [icon_o, icon_o_outline, icon_x, icon_x_outline, restart, logo];
 icons.forEach(img => (new Image().src = img));
 
 // // // // // // // // // // // // // // //
 
-const Game = function () {};
-
 function App() {
-    const [gameMode, setGameMode] = useState('');
+    const [gameMode, setGameMode] = useState('1');
     const [player_1, setPlayer_1] = useState('');
     const [current, setCurrent] = useState('x');
 
@@ -37,9 +35,12 @@ function App() {
 
     if (gameMode) {
         return (
-            <>
-                <p>text</p>
-            </>
+            <Game
+                logo={logo}
+                restart={restart}
+                icon_o={icon_o}
+                icon_x={icon_x}
+            />
         );
     }
 }

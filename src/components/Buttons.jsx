@@ -37,7 +37,7 @@ const ButtonSecond = function (props) {
 
 const ButtonReset = function (props) {
     return (
-        <div className={styles.btn_reset} role="button" aria-label="Reset">
+        <div className={`${styles.btn_reset}`} role="button" aria-label="Reset">
             <img src={props.icon} alt="Reset" />
         </div>
     );

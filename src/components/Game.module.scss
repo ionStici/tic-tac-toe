@@ -1,0 +1,132 @@
+// // // // // // // // // // // // // // //
+
+.section {
+    max-width: 375px;
+    margin: 0 auto;
+    padding: 24px 24px 127px 27px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 64px;
+}
+
+.middleBox {
+    background-color: var(--color-semi-dark-navy);
+    box-shadow: var(--shadow-navy-dark-4px);
+
+    width: 96px;
+    height: 40px;
+    border-radius: 5px;
+
+    position: relative;
+
+    & > :first-child {
+        transform: scale(0.25);
+
+        position: absolute;
+        top: -14px;
+        left: -10px;
+    }
+
+    p {
+        color: var(--color-silver);
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 18px;
+        letter-spacing: 0.875px;
+
+        position: absolute;
+        top: 9px;
+        right: 15px;
+    }
+}
+
+// // // // // // // // // // // // // // //
+
+.wrapper {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 20px;
+    width: 327px;
+    height: 327px;
+
+    margin-bottom: 20px;
+}
+
+.box {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    padding-top: 24px;
+
+    border-radius: 10px;
+    background-color: var(--color-semi-dark-navy);
+    box-shadow: inset 0px -8px 0px #10212a;
+    cursor: pointer;
+}
+
+.mark_initial {
+    opacity: 0;
+}
+
+.mark {
+    width: 40px;
+    height: 40px;
+
+    transition: opacity 0.15s;
+}
+
+// // // // // // // // // // // // // // //
+
+.footer {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(3, 96px);
+    grid-template-rows: 64px;
+}
+
+.total {
+    color: var(--color-dark-navy);
+    text-align: center;
+
+    padding-top: 12px;
+    border-radius: 10px;
+}
+
+.total_x {
+    background-color: var(--color-light-blue);
+}
+
+.total_ties {
+    background-color: var(--color-silver);
+}
+
+.total_o {
+    background-color: var(--color-light-yellow);
+}
+
+.title {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: 0.75px;
+
+    margin-bottom: 1px;
+}
+
+.score {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 25px;
+    letter-spacing: 1.25px;
+}
+
+// // // // // // // // // // // // // // //
