@@ -1,0 +1,113 @@
+// // // // // // // // // // // // // // //
+
+.btn_main,
+.btn_second,
+.btn_reset {
+    text-transform: uppercase;
+    color: var(--color-dark-navy);
+
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 1px;
+
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.15s, transform 0.15s;
+
+    &:active {
+        transform: scale(0.975);
+    }
+}
+
+// // // // // // // // // // // // // // //
+
+.btn_main {
+    width: 100%;
+    border-radius: 15px;
+    padding: 14px 0 22px 0;
+
+    @media only screen and (min-width: 768px) {
+        font-size: 20px;
+        line-height: 25px;
+        letter-spacing: 1.25px;
+        padding: 17px 0 25px 0;
+    }
+}
+
+.btn_main_yellow {
+    background-color: var(--color-light-yellow);
+    box-shadow: inset 0px -8px 0px var(--color-light-yellow-shadow);
+
+    &:hover {
+        background-color: var(--color-light-yellow-hover);
+    }
+}
+
+.btn_main_blue {
+    background-color: var(--color-light-blue);
+    box-shadow: inset 0px -8px 0px var(--color-light-blue-shadow);
+
+    &:hover {
+        background-color: var(--color-light-blue-hover);
+    }
+}
+
+// // // // // // // // // // // // // // //
+
+.btn_second {
+    display: block;
+    border-radius: 10px;
+    padding: 15px 16px 17px 17px;
+}
+
+.btn_second_silver {
+    background-color: var(--color-silver);
+    box-shadow: inset 0px -4px 0px var(--color-silver-shadow);
+
+    &:hover {
+        background-color: var(--color-silver-hover);
+    }
+}
+
+.btn_second_yellow {
+    background-color: var(--color-light-yellow);
+    box-shadow: inset 0px -4px 0px var(--color-light-yellow-shadow);
+
+    &:hover {
+        background-color: var(--color-light-yellow-hover);
+    }
+}
+
+// // // // // // // // // // // // // // //
+
+.btn_reset {
+    background-color: var(--color-silver);
+    box-shadow: inset 0px -4px 0px var(--color-silver-shadow);
+
+    display: inline-block;
+    border-radius: 5px;
+    padding: 11.3px 12.3px 13.3px 12.3px;
+
+    @media only screen and (min-width: 768px) {
+        border-radius: 10px;
+        padding: 15px 16px 17px 16px;
+    }
+
+    img {
+        display: block;
+        width: 15.4px;
+        height: 15.4px;
+
+        @media only screen and (min-width: 768px) {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    &:hover {
+        background-color: var(--color-silver-hover);
+    }
+}
+
+// // // // // // // // // // // // // // //
