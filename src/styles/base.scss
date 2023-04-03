@@ -32,3 +32,10 @@ body {
     font-family: 'Outfit', sans-serif;
     background-color: var(--color-dark-navy);
 }
+
+main {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

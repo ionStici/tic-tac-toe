@@ -1,0 +1,123 @@
+// // // // // // // // // // // // // // //
+
+.section {
+    max-width: 508px;
+    margin: 0 auto;
+    padding: 119px 24px;
+}
+
+.header {
+    margin-bottom: 32px;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto;
+}
+
+// // // // // // // // // // // // // // //
+
+.panel {
+    text-align: center;
+    padding: 24px 24px 30px 24px;
+    margin-bottom: 32px;
+
+    background-color: var(--color-semi-dark-navy);
+    border-radius: 15px;
+}
+
+.title {
+    color: var(--color-silver);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 1px;
+
+    margin-bottom: 24px;
+}
+
+.text {
+    color: var(--color-silver);
+    text-transform: uppercase;
+    opacity: 0.5;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0.875px;
+
+    margin-top: 17px;
+}
+
+// // // // // // // // // // // // // // //
+
+.box {
+    display: flex;
+    padding: 9px 8px;
+    background-color: var(--color-dark-navy);
+    border-radius: 10px;
+}
+
+.x_box {
+    width: 50%;
+    border-radius: 10px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.x {
+    transform: scale(0.504);
+
+    path {
+        fill: var(--color-silver);
+    }
+}
+
+.o_box {
+    width: 50%;
+    border-radius: 10px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.o {
+    transform: scale(0.504);
+
+    path {
+        fill: var(--color-silver);
+    }
+}
+
+.x_box:hover {
+    background-color: hsla(198, 23%, 72%, 0.05);
+}
+
+.o_box:hover {
+    background-color: hsla(198, 23%, 72%, 0.05);
+}
+
+.active {
+    background-color: var(--color-silver);
+
+    path {
+        fill: var(--color-dark-navy);
+    }
+
+    &:hover {
+        background-color: var(--color-silver);
+    }
+}
+
+// // // // // // // // // // // // // // //
+
+.buttonBox > :first-child {
+    margin-bottom: 16px;
+}
+
+// // // // // // // // // // // // // // //
