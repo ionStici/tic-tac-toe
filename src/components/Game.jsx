@@ -1,9 +1,31 @@
-import styles from './Game.module.scss';
+import styles from './../styles/Game.module.scss';
 import { ButtonReset } from './Buttons';
-import { x, o } from './NewGame';
+import { assets } from '../Assets';
+
+const x = (
+    <svg
+        className={styles.x}
+        width="64"
+        height="64"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        {assets.path_x}
+    </svg>
+);
+
+const o = (
+    <svg
+        className={styles.o}
+        width="64"
+        height="64"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        {assets.path_o}
+    </svg>
+);
 
 const Game = function (props) {
-    let player = '2';
+    let player = '1';
 
     const setActive = ({ target }) => {
         if (target.closest('img') || target.querySelector('img').src) return;
@@ -21,13 +43,45 @@ const Game = function (props) {
             <header className={styles.header}>
                 <img className={styles.logo} src={props.logo} alt="" />
                 <div className={styles.middleBox}>
-                    {o}
+                    {x}
                     <p>Turn</p>
                 </div>
                 <ButtonReset icon={props.restart} />
             </header>
 
             <div className={styles.wrapper}>
+                <div className={styles.box} onClick={setActive}>
+                    <img className={styles.mark_initial} alt="" />
+                </div>
+
+                <div className={styles.box} onClick={setActive}>
+                    <img className={styles.mark_initial} alt="" />
+                </div>
+
+                <div className={styles.box} onClick={setActive}>
+                    <img className={styles.mark_initial} alt="" />
+                </div>
+
+                <div className={styles.box} onClick={setActive}>
+                    <img className={styles.mark_initial} alt="" />
+                </div>
+
+                <div className={styles.box} onClick={setActive}>
+                    <img className={styles.mark_initial} alt="" />
+                </div>
+
+                <div className={styles.box} onClick={setActive}>
+                    <img className={styles.mark_initial} alt="" />
+                </div>
+
+                <div className={styles.box} onClick={setActive}>
+                    <img className={styles.mark_initial} alt="" />
+                </div>
+
+                <div className={styles.box} onClick={setActive}>
+                    <img className={styles.mark_initial} alt="" />
+                </div>
+
                 <div className={styles.box} onClick={setActive}>
                     <img className={styles.mark_initial} alt="" />
                 </div>

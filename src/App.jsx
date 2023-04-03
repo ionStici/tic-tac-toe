@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './styles/base.scss';
 
 import icon_o_outline from './assets/icon-o-outline.svg';
@@ -11,8 +11,9 @@ import restart from './assets/icon-restart.svg';
 import logo from './assets/logo.svg';
 
 import NewGame from './components/NewGame';
-import Prompt from './components/Prompt';
 import Game from './components/Game';
+
+import { assets } from './Assets';
 
 const icons = [icon_o, icon_o_outline, icon_x, icon_x_outline, restart, logo];
 icons.forEach(img => (new Image().src = img));
@@ -20,7 +21,7 @@ icons.forEach(img => (new Image().src = img));
 // // // // // // // // // // // // // // //
 
 function App() {
-    const [gameMode, setGameMode] = useState('1');
+    const [gameMode, setGameMode] = useState('');
     const [player_1, setPlayer_1] = useState('');
     const [current, setCurrent] = useState('x');
 
@@ -30,7 +31,7 @@ function App() {
     };
 
     if (!gameMode) {
-        return <NewGame logo={logo} startNewGame={startNewGame} />;
+        return <NewGame startNewGame={startNewGame} />;
     }
 
     if (gameMode) {
