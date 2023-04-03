@@ -1,13 +1,21 @@
 // // // // // // // // // // // // // // //
 
 .section {
-    max-width: 508px;
+    width: 375px;
     margin: 0 auto;
     padding: 119px 24px;
+
+    @media only screen and (min-width: 768px) {
+        width: 508px;
+    }
 }
 
 .header {
     margin-bottom: 32px;
+
+    @media only screen and (min-width: 768px) {
+        margin-bottom: 40px;
+    }
 }
 
 .logo {
@@ -23,7 +31,12 @@
     margin-bottom: 32px;
 
     background-color: var(--color-semi-dark-navy);
+    box-shadow: inset 0px -8px 0px var(--color-dark-navy-shadow);
     border-radius: 15px;
+
+    @media only screen and (min-width: 768px) {
+        margin-bottom: 40px;
+    }
 }
 
 .title {
@@ -51,14 +64,15 @@
 
 // // // // // // // // // // // // // // //
 
-.box {
+.wrapper {
+    height: 72px;
     display: flex;
     padding: 9px 8px;
     background-color: var(--color-dark-navy);
     border-radius: 10px;
 }
 
-.x_box {
+.box {
     width: 50%;
     border-radius: 10px;
     cursor: pointer;
@@ -66,6 +80,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    &:hover {
+        background-color: hsla(198, 23%, 72%, 0.05);
+    }
 }
 
 .x {
@@ -76,30 +94,12 @@
     }
 }
 
-.o_box {
-    width: 50%;
-    border-radius: 10px;
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .o {
     transform: scale(0.504);
 
     path {
         fill: var(--color-silver);
     }
-}
-
-.x_box:hover {
-    background-color: hsla(198, 23%, 72%, 0.05);
-}
-
-.o_box:hover {
-    background-color: hsla(198, 23%, 72%, 0.05);
 }
 
 .active {
@@ -118,6 +118,10 @@
 
 .buttonBox > :first-child {
     margin-bottom: 16px;
+
+    @media only screen and (min-width: 768px) {
+        margin-bottom: 20px;
+    }
 }
 
 // // // // // // // // // // // // // // //
