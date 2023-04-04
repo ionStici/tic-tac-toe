@@ -1,7 +1,7 @@
 import styles from './../styles/Game.module.scss';
 import { ButtonReset } from './Buttons';
 import { assets } from '../assets/Assets';
-import React from 'react';
+import React, { useState } from 'react';
 
 // prettier-ignore
 const x = (<svg className={styles.x} width="64" height="64" xmlns="http://www.w3.org/2000/svg">{assets.path_x}</svg>);
@@ -9,11 +9,45 @@ const x = (<svg className={styles.x} width="64" height="64" xmlns="http://www.w3
 const o = (<svg className={styles.o} width="64" height="64" xmlns="http://www.w3.org/2000/svg">{assets.path_o}</svg>);
 
 const Game = function (props) {
-    const [gameState, setGameState] = React.useState();
-    React.useEffect(() => setGameState(props.gameState), []);
+    const state = props.gameState;
+    const [player1, setPlayer1] = useState(state.player1);
+    const [player2, setPlayer2] = useState(state.player2);
+    const [gameMode, setGameMode] = useState(state.gameMode);
+    const [currentPlayer, setCurrentPlayer] = useState(state.currentPlayer);
+    const [mark, setMark] = useState(currentPlayer === 'x' ? x : o);
+
+    const checkWinner = function (boxes) {
+        const marks = ['1', '2', '3', '4', '5', '6', '7', '8'].map(num => {
+            return [].slice
+                .call(boxes)
+                .filter(t => t.classList.contains(num))
+                .map(box => box.dataset.mark);
+        });
+    };
 
     const setActive = ({ target }) => {
-        console.log('run');
+        if (target.dataset.mark) return;
+
+        target.dataset.mark = currentPlayer;
+        const mark = currentPlayer === 'x' ? assets.icon_x : assets.icon_o;
+
+        const img = target.querySelector('img');
+        img.classList.remove(styles.mark_hidden);
+        img.classList.add(styles.mark);
+        img.src = mark;
+
+        if (currentPlayer === 'x') {
+            setCurrentPlayer('o');
+            setMark(o);
+        }
+
+        if (currentPlayer === 'o') {
+            setCurrentPlayer('x');
+            setMark(x);
+        }
+
+        const boxes = target.parentElement.children;
+        checkWinner(boxes);
     };
 
     return (
@@ -21,28 +55,120 @@ const Game = function (props) {
             <header className={styles.header}>
                 <img className={styles.logo} src={assets.logo} alt="" />
                 <div className={styles.middleBox}>
-                    {x}
+                    {mark}
                     <p>Turn</p>
                 </div>
                 <ButtonReset icon={assets.icon_restart} />
             </header>
 
             <div className={styles.wrapper}>
-                <div className={styles.box} onClick={setActive}>
-                    <img className={styles.mark} src={assets.icon_x} alt="" />
+                <div
+                    className={`${styles.box} 1 4 8`}
+                    onClick={setActive}
+                    data-mark=""
+                >
+                    <img
+                        className={styles.mark_hidden}
+                        src={undefined}
+                        alt="Mark"
+                    />
                 </div>
 
-                <div className={styles.box} onClick={setActive}>
-                    <img className={styles.mark} src={assets.icon_o} alt="" />
+                <div
+                    className={`${styles.box} 1 5`}
+                    onClick={setActive}
+                    data-mark=""
+                >
+                    <img
+                        className={styles.mark_hidden}
+                        src={undefined}
+                        alt="Mark"
+                    />
                 </div>
 
-                <div className={styles.box} onClick={setActive}></div>
-                <div className={styles.box} onClick={setActive}></div>
-                <div className={styles.box} onClick={setActive}></div>
-                <div className={styles.box} onClick={setActive}></div>
-                <div className={styles.box} onClick={setActive}></div>
-                <div className={styles.box} onClick={setActive}></div>
-                <div className={styles.box} onClick={setActive}></div>
+                <div
+                    className={`${styles.box} 1 6 7`}
+                    onClick={setActive}
+                    data-mark=""
+                >
+                    <img
+                        className={styles.mark_hidden}
+                        src={undefined}
+                        alt="Mark"
+                    />
+                </div>
+
+                <div
+                    className={`${styles.box} 2 4`}
+                    onClick={setActive}
+                    data-mark=""
+                >
+                    <img
+                        className={styles.mark_hidden}
+                        src={undefined}
+                        alt="Mark"
+                    />
+                </div>
+
+                <div
+                    className={`${styles.box} 2 5 7 8`}
+                    onClick={setActive}
+                    data-mark=""
+                >
+                    <img
+                        className={styles.mark_hidden}
+                        src={undefined}
+                        alt="Mark"
+                    />
+                </div>
+
+                <div
+                    className={`${styles.box} 2 6`}
+                    onClick={setActive}
+                    data-mark=""
+                >
+                    <img
+                        className={styles.mark_hidden}
+                        src={undefined}
+                        alt="Mark"
+                    />
+                </div>
+
+                <div
+                    className={`${styles.box} 3 4 7`}
+                    onClick={setActive}
+                    data-mark=""
+                >
+                    <img
+                        className={styles.mark_hidden}
+                        src={undefined}
+                        alt="Mark"
+                    />
+                </div>
+
+                <div
+                    className={`${styles.box} 3 5`}
+                    onClick={setActive}
+                    data-mark=""
+                >
+                    <img
+                        className={styles.mark_hidden}
+                        src={undefined}
+                        alt="Mark"
+                    />
+                </div>
+
+                <div
+                    className={`${styles.box} 3 6 8`}
+                    onClick={setActive}
+                    data-mark=""
+                >
+                    <img
+                        className={styles.mark_hidden}
+                        src={undefined}
+                        alt="Mark"
+                    />
+                </div>
             </div>
 
             <footer className={styles.footer}>

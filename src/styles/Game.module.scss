@@ -115,10 +115,19 @@
     }
 }
 
+.mark_hidden {
+    opacity: 0;
+    user-select: none;
+    pointer-events: none;
+}
+
 .mark {
     width: 40px;
     height: 40px;
+
     user-select: none;
+    pointer-events: none;
+    transition: opacity 0.15s;
 
     @media only screen and (min-width: 768px) {
         width: 64px;
