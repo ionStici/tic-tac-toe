@@ -37,7 +37,7 @@
 
 .btn_main_yellow {
     background-color: var(--color-light-yellow);
-    box-shadow: inset 0px -8px 0px var(--color-light-yellow-shadow);
+    box-shadow: var(--shadow-light-yellow);
 
     &:hover {
         background-color: var(--color-light-yellow-hover);
@@ -46,7 +46,7 @@
 
 .btn_main_blue {
     background-color: var(--color-light-blue);
-    box-shadow: inset 0px -8px 0px var(--color-light-blue-shadow);
+    box-shadow: var(--shadow-light-blue);
 
     &:hover {
         background-color: var(--color-light-blue-hover);
@@ -63,7 +63,7 @@
 
 .btn_second_silver {
     background-color: var(--color-silver);
-    box-shadow: inset 0px -4px 0px var(--color-silver-shadow);
+    box-shadow: var(--shadow-silver-4px);
 
     &:hover {
         background-color: var(--color-silver-hover);
@@ -72,7 +72,7 @@
 
 .btn_second_yellow {
     background-color: var(--color-light-yellow);
-    box-shadow: inset 0px -4px 0px var(--color-light-yellow-shadow);
+    box-shadow: var(--shadow-light-yellow-4px);
 
     &:hover {
         background-color: var(--color-light-yellow-hover);
@@ -83,7 +83,7 @@
 
 .btn_reset {
     background-color: var(--color-silver);
-    box-shadow: inset 0px -4px 0px var(--color-silver-shadow);
+    box-shadow: var(--shadow-silver-4px);
 
     display: inline-block;
     border-radius: 5px;

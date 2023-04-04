@@ -4,6 +4,11 @@
     width: 375px;
     margin: 0 auto;
     padding: 24px 24px 127px 24px;
+
+    @media only screen and (min-width: 768px) {
+        width: 508px;
+        padding: 139px 24px 138px 24px;
+    }
 }
 
 .header {
@@ -11,6 +16,10 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 64px;
+
+    @media only screen and (min-width: 768px) {
+        margin-bottom: 19px;
+    }
 }
 
 .middleBox {
@@ -20,15 +29,30 @@
     width: 96px;
     height: 40px;
     border-radius: 5px;
-
     position: relative;
+
+    @media only screen and (min-width: 768px) {
+        width: 140px;
+        height: 52px;
+        border-radius: 10px;
+    }
 
     & > :first-child {
         transform: scale(0.25);
 
+        path {
+            fill: var(--color-silver);
+        }
+
         position: absolute;
         top: -14px;
         left: -10px;
+
+        @media only screen and (min-width: 768px) {
+            transform: scale(0.315);
+            top: -8px;
+            left: 7px;
+        }
     }
 
     p {
@@ -42,6 +66,14 @@
         position: absolute;
         top: 9px;
         right: 15px;
+
+        @media only screen and (min-width: 768px) {
+            font-size: 16px;
+            line-height: 20px;
+            letter-spacing: 1px;
+            top: 13px;
+            right: 30px;
+        }
     }
 }
 
@@ -57,6 +89,11 @@
     height: 327px;
 
     margin-bottom: 20px;
+
+    @media only screen and (min-width: 768px) {
+        height: 460px;
+        margin-bottom: 19px;
+    }
 }
 
 .box {
@@ -70,21 +107,23 @@
 
     border-radius: 10px;
     background-color: var(--color-semi-dark-navy);
-    box-shadow: inset 0px -8px 0px #10212a;
+    box-shadow: var(--shadow-navy-dark-8px);
     cursor: pointer;
-}
 
-.mark_initial {
-    opacity: 0;
+    @media only screen and (min-width: 768px) {
+        padding-top: 38px;
+    }
 }
 
 .mark {
     width: 40px;
     height: 40px;
-
     user-select: none;
 
-    transition: opacity 0.15s;
+    @media only screen and (min-width: 768px) {
+        width: 64px;
+        height: 64px;
+    }
 }
 
 // // // // // // // // // // // // // // //
@@ -94,6 +133,10 @@
     gap: 20px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 64px;
+
+    @media only screen and (min-width: 768px) {
+        grid-template-rows: 72px;
+    }
 }
 
 .total {
@@ -102,6 +145,11 @@
 
     padding-top: 12px;
     border-radius: 10px;
+
+    @media only screen and (min-width: 768px) {
+        padding-top: 13px;
+        border-radius: 15px;
+    }
 }
 
 .total_x {
@@ -124,6 +172,12 @@
     letter-spacing: 0.75px;
 
     margin-bottom: 1px;
+
+    @media only screen and (min-width: 768px) {
+        font-size: 14px;
+        line-height: 18px;
+        letter-spacing: 0.875px;
+    }
 }
 
 .score {
@@ -131,6 +185,12 @@
     font-size: 20px;
     line-height: 25px;
     letter-spacing: 1.25px;
+
+    @media only screen and (min-width: 768px) {
+        font-size: 24px;
+        line-height: 30px;
+        letter-spacing: 1.5px;
+    }
 }
 
 // // // // // // // // // // // // // // //

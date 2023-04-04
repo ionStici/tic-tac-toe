@@ -31,7 +31,7 @@
     margin-bottom: 32px;
 
     background-color: var(--color-semi-dark-navy);
-    box-shadow: inset 0px -8px 0px var(--color-dark-navy-shadow);
+    box-shadow: var(--shadow-navy-dark-8px);
     border-radius: 15px;
 
     @media only screen and (min-width: 768px) {

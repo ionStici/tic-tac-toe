@@ -3,21 +3,26 @@
 
     --color-light-blue: hsla(178, 60%, 48%, 1);
     --color-light-blue-hover: hsla(178, 76%, 66%, 1);
-    --color-light-blue-shadow: #118c87;
 
     --color-light-yellow: hsla(39, 88%, 58%, 1);
     --color-light-yellow-hover: hsla(39, 100%, 69%, 1);
-    --color-light-yellow-shadow: #cc8b13;
 
     --color-silver: hsla(199, 24%, 73%, 1);
     --color-silver-hover: hsla(198, 35%, 89%, 1);
-    --color-silver-shadow: #6b8997;
 
     --color-dark-navy: hsla(200, 32%, 15%, 1);
     --color-semi-dark-navy: hsla(200, 35%, 19%, 1);
-    --color-dark-navy-shadow: #10212a;
+
+    // // // // // // // // // // // // // // //
+
+    --shadow-light-yellow: inset 0px -8px 0px #cc8b13;
+    --shadow-light-blue: inset 0px -8px 0px #118c87;
+
+    --shadow-silver-4px: inset 0px -4px 0px #6b8997;
+    --shadow-light-yellow-4px: inset 0px -4px 0px #cc8b13;
 
     --shadow-navy-dark-4px: inset 0px -4px 0px #10212a;
+    --shadow-navy-dark-8px: inset 0px -8px 0px #10212a;
 }
 
 * {
