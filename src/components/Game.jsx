@@ -8,8 +8,14 @@ const x = (<svg className={styles.x} width="64" height="64" xmlns="http://www.w3
 // prettier-ignore
 const o = (<svg className={styles.o} width="64" height="64" xmlns="http://www.w3.org/2000/svg">{assets.path_o}</svg>);
 
+// prettier-ignore
+const icon_x = (<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">{assets.path_x}</svg>);
+// prettier-ignore
+const icon_o = (<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">{assets.path_o}</svg>);
+
 const Game = function (props) {
     const state = props.gameState;
+    const [play, setPlay] = useState(true);
     const [player1, setPlayer1] = useState(state.player1);
     const [player2, setPlayer2] = useState(state.player2);
     const [gameMode, setGameMode] = useState(state.gameMode);
@@ -18,36 +24,56 @@ const Game = function (props) {
 
     const checkWinner = function (boxes) {
         const marks = ['1', '2', '3', '4', '5', '6', '7', '8'].map(num => {
-            return [].slice
-                .call(boxes)
-                .filter(t => t.classList.contains(num))
-                .map(box => box.dataset.mark);
+            return [].slice.call(boxes).filter(t => t.classList.contains(num));
         });
+
+        const winnerMarks = marks.filter(marks => {
+            return marks.every(mark => {
+                return mark.dataset.mark === currentPlayer;
+            });
+        });
+
+        if (winnerMarks[0]) {
+            winnerMarks[0].forEach(box => {
+                if (box.dataset.mark === 'x') {
+                    // box.classList.add(styles.x_winner);
+                    box.querySelector('img').src = assets.icon_x_outline;
+                }
+
+                if (box.dataset.mark === 'o') {
+                    // box.classList.add(styles.o_winner);
+                    box.querySelector('img').src = assets.icon_o_outline;
+                }
+            });
+
+            setPlay(false);
+        }
     };
 
     const setActive = ({ target }) => {
-        if (target.dataset.mark) return;
+        if (play) {
+            if (target.dataset.mark) return;
 
-        target.dataset.mark = currentPlayer;
-        const mark = currentPlayer === 'x' ? assets.icon_x : assets.icon_o;
+            target.dataset.mark = currentPlayer;
+            const mark = currentPlayer === 'x' ? assets.icon_x : assets.icon_o;
 
-        const img = target.querySelector('img');
-        img.classList.remove(styles.mark_hidden);
-        img.classList.add(styles.mark);
-        img.src = mark;
+            const img = target.querySelector('img');
+            img.classList.remove(styles.mark_hidden);
+            img.classList.add(styles.mark);
+            img.src = mark;
 
-        if (currentPlayer === 'x') {
-            setCurrentPlayer('o');
-            setMark(o);
+            if (currentPlayer === 'x') {
+                setCurrentPlayer('o');
+                setMark(o);
+            }
+
+            if (currentPlayer === 'o') {
+                setCurrentPlayer('x');
+                setMark(x);
+            }
+
+            checkWinner(target.parentElement.children);
         }
-
-        if (currentPlayer === 'o') {
-            setCurrentPlayer('x');
-            setMark(x);
-        }
-
-        const boxes = target.parentElement.children;
-        checkWinner(boxes);
     };
 
     return (
