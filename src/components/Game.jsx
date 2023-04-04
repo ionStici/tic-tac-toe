@@ -1,6 +1,6 @@
 import styles from './../styles/Game.module.scss';
 import { ButtonReset } from './Buttons';
-import { assets } from '../Assets';
+import { assets } from '../assets/Assets';
 
 const x = (
     <svg

@@ -22,11 +22,7 @@ const ButtonSecond = function (props) {
     return (
         <button
             // prettier-ignore
-            className={`
-                ${styles.btn_second}
-                ${props.color === 'silver' ? styles.btn_second_silver : ''}
-                ${props.color === 'yellow' ? styles.btn_second_yellow : ''}
-            `}
+            className={`${styles.btn_second} ${props.color === 'silver' ? styles.btn_second_silver : ''} ${props.color === 'yellow' ? styles.btn_second_yellow : ''}`}
         >
             {props.text}
         </button>

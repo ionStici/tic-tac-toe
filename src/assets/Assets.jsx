@@ -1,9 +1,9 @@
-import icon_o_outline from './assets/icon-o-outline.svg';
-import icon_o from './assets/icon-o.svg';
-import icon_x_outline from './assets/icon-x-outline.svg';
-import icon_x from './assets/icon-x.svg';
-import restart from './assets/icon-restart.svg';
-import logo from './assets/logo.svg';
+import icon_o_outline from './icon-o-outline.svg';
+import icon_o from './icon-o.svg';
+import icon_x_outline from './icon-x-outline.svg';
+import icon_x from './icon-x.svg';
+import restart from './icon-restart.svg';
+import logo from './logo.svg';
 
 const icons = [icon_o, icon_o_outline, icon_x, icon_x_outline, restart, logo];
 icons.forEach(img => (new Image().src = img));

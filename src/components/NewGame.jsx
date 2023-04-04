@@ -1,22 +1,27 @@
 import { ButtonMain } from './Buttons';
 import styles from './../styles/NewGame.module.scss';
-import { assets } from '../Assets';
+import { assets } from '../assets/Assets';
 import { useState } from 'react';
 
 const NewGame = function (props) {
-    const [mark, setMark] = useState('x');
+    const [player1, setPlayer1] = useState('x');
+    const [player2, setPlayer2] = useState('o');
 
     const switchMark = function ({ target }) {
-        document
-            .querySelectorAll(`.${styles.box}`)
-            .forEach(box => box.classList.remove(styles.active));
-
+        const marks = document.querySelectorAll(`.${styles.box}`);
+        marks.forEach(box => box.classList.remove(styles.active));
         target.closest(`.${styles.box}`).classList.add(styles.active);
-        setMark(target.closest(`.${styles.box}`).dataset.mark);
+
+        const active = target.closest(`.${styles.active}`);
+        setPlayer1(active.dataset.mark);
+        setPlayer2(
+            active.nextElementSibling?.dataset.mark ||
+                active.previousElementSibling?.dataset.mark
+        );
     };
 
     const startNewGame = ({ target }) => {
-        props.startNewGame(target.dataset.mode, mark);
+        props.startNewGame(player1, player2, target.dataset.mode);
     };
 
     return (
