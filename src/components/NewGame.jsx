@@ -21,7 +21,12 @@ const NewGame = function (props) {
     };
 
     const startNewGame = ({ target }) => {
-        props.startNewGame(player1, player2, target.dataset.mode);
+        props.startNewGame({
+            player1: player1,
+            player2: player2,
+            currentPlayer: 'x',
+            gameMode: target.dataset.mode,
+        });
     };
 
     return (

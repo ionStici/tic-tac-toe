@@ -7,37 +7,27 @@ import Game from './components/Game';
 // // // // // // // // // // // // // // //
 
 function App() {
-    const [gameState, setGameState] = React.useState({
-        play: false,
-        player1: '',
-        player2: '',
-        currentPlayer: 'x',
-        gameMode: '', // 1 is when playing with CPU / 2 is when playing in 2 players mode
-    });
+    const [play, setPlay] = React.useState(false);
+    const [gameState, setGameState] = React.useState();
 
-    // TEMPORARY
-    // React.useEffect(() => {
-    //     setGameState({
-    //         play: true,
-    //         player1: 'x',
-    //         player2: 'o',
-    //         currentPlayer: 'x',
-    //         gameMode: '2',
-    //     });
-    // }, []);
-
-    const startNewGame = function (player1, player2, gameMode) {
-        setGameState({
-            play: true,
-            player1: player1,
-            player2: player2,
-            currentPlayer: 'x',
-            gameMode: gameMode,
-        });
+    const startNewGame = function (state) {
+        setPlay(true);
+        setGameState(state);
     };
 
-    if (!gameState.play) return <NewGame startNewGame={startNewGame} />;
-    if (gameState.play) return <Game />;
+    // TEMPORARY
+    React.useEffect(() => setPlay(true), []);
+    React.useEffect(() => {
+        setGameState({
+            player1: 'x',
+            player2: 'o',
+            currentPlayer: 'x',
+            gameMode: '2',
+        });
+    }, []);
+
+    if (!play) return <NewGame startNewGame={startNewGame} />;
+    if (play) return <Game gameState={gameState} />;
 }
 
 export default App;

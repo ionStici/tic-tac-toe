@@ -1,31 +1,16 @@
 import styles from './../styles/Game.module.scss';
 import { ButtonReset } from './Buttons';
 import { assets } from '../assets/Assets';
+import React from 'react';
 
-const x = (
-    <svg
-        className={styles.x}
-        width="64"
-        height="64"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        {assets.path_x}
-    </svg>
-);
-
-const o = (
-    <svg
-        className={styles.o}
-        width="64"
-        height="64"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        {assets.path_o}
-    </svg>
-);
+// prettier-ignore
+const x = (<svg className={styles.x} width="64" height="64" xmlns="http://www.w3.org/2000/svg">{assets.path_x}</svg>);
+// prettier-ignore
+const o = (<svg className={styles.o} width="64" height="64" xmlns="http://www.w3.org/2000/svg">{assets.path_o}</svg>);
 
 const Game = function (props) {
-    let player = '1';
+    console.log(props.gameState);
+    const [gameState, setGameState] = React.useState();
 
     const setActive = ({ target }) => {
         if (target.closest('img') || target.querySelector('img').src) return;
@@ -34,19 +19,19 @@ const Game = function (props) {
         img.classList.add(styles.mark);
         img.classList.remove(styles.mark_initial);
 
-        img.src = player === '1' ? props.icon_x : props.icon_o;
-        target.dataset.mark = player === '1' ? 'x' : 'o';
+        img.src = assets.icon_x;
+        target.dataset.mark = 'x';
     };
 
     return (
         <section className={styles.section}>
             <header className={styles.header}>
-                <img className={styles.logo} src={props.logo} alt="" />
+                <img className={styles.logo} src={assets.logo} alt="" />
                 <div className={styles.middleBox}>
                     {x}
                     <p>Turn</p>
                 </div>
-                <ButtonReset icon={props.restart} />
+                <ButtonReset icon={assets.icon_restart} />
             </header>
 
             <div className={styles.wrapper}>
