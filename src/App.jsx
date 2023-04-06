@@ -25,6 +25,7 @@ function App() {
             gameMode: '2',
         });
     }, []);
+    //
 
     if (!play) return <NewGame startNewGame={startNewGame} />;
     if (play) return <Game gameState={gameState} />;
