@@ -161,7 +161,6 @@
     pointer-events: none;
 
     transform: scale(1.5);
-    transition: transform 0.25s;
 
     &_x {
         position: absolute;
@@ -176,7 +175,12 @@
     }
 
     &_fade_in {
+        transition: transform 0.25s;
         transform: scale(1);
+    }
+
+    &_winner path {
+        fill: var(--color-dark-navy);
     }
 }
 

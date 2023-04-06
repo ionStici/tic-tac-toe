@@ -10,43 +10,72 @@ const Game = function (props) {
     const [player1, setPlayer1] = useState(state.player1);
     const [player2, setPlayer2] = useState(state.player2);
 
+    const [gameMode, setGameMode] = useState(state.gameMode);
+    const [currentPlayer, setCurrentPlayer] = useState(state.currentPlayer);
+
     const [score_x, setScore_x] = useState(0);
     const [score_o, setScore_o] = useState(0);
     const [score_ties, setScore_ties] = useState(0);
 
-    const [gameMode, setGameMode] = useState(state.gameMode);
-    const [currentPlayer, setCurrentPlayer] = useState(state.currentPlayer);
+    // // // // // // // // // // // // // // //
+    // CHECK WINNER
 
     const checkWinner = function (boxes) {
-        //     const marks = ['1', '2', '3', '4', '5', '6', '7', '8'].map(num => {
-        //         return [].slice.call(boxes).filter(t => t.classList.contains(num));
-        //     });
-        //     const winnerMarks = marks.filter(marks => {
-        //         return marks.every(mark => {
-        //             return mark.dataset.mark === currentPlayer;
-        //         });
-        //     });
-        //     winnerMarks[0]?.forEach(box => {
-        //         const svg = box.querySelector(`.${styles.mark_silver}`);
-        //         if (box.dataset.mark === 'x') {
-        //         }
-        //         if (box.dataset.mark === 'o') {
-        //         }
-        //     });
-        //     if (winnerMarks[0]) {
-        //         winnerMarks[0].forEach(box => {
-        //             if (box.dataset.mark === 'x') {
-        //                 box.classList.add(styles.x_winner);
-        //                 // box.querySelector('img').src = assets.icon_x_outline;
-        //             }
-        //             if (box.dataset.mark === 'o') {
-        //                 box.classList.add(styles.o_winner);
-        //                 // box.querySelector('img').src = assets.icon_o_outline;
-        //             }
-        //         });
-        //         setPlay(false);
-        //     }
+        const marks = ['1', '2', '3', '4', '5', '6', '7', '8'].map(num => {
+            return [].slice.call(boxes).filter(t => t.classList.contains(num));
+        });
+        const winnerMarks = marks.filter(marks => {
+            return marks.every(mark => {
+                return mark.dataset.mark === currentPlayer;
+            });
+        });
+
+        winnerMarks[0]?.forEach(box => {
+            let svg;
+
+            if (box.dataset.mark === 'x') {
+                svg = box.querySelector(`.${styles.mark_x}`);
+                box.classList.add(styles.x_winner);
+            }
+
+            if (box.dataset.mark === 'o') {
+                svg = box.querySelector(`.${styles.mark_o}`);
+                box.classList.add(styles.o_winner);
+            }
+
+            svg.classList.add(styles.mark_winner);
+            svg.classList.remove(styles.mark_fade_in);
+            setTimeout(() => svg.classList.add(styles.mark_fade_in), 1);
+
+            setPlay(false);
+        });
+
+        // UPDATE SCORE
+        if (winnerMarks[0]) {
+            if (winnerMarks[0][0].dataset.mark === 'x') updateScore('x');
+            if (winnerMarks[0][0].dataset.mark === 'o') updateScore('o');
+        }
+
+        // CHECK IF TIE
+        const tie = [].slice.call(boxes).every(box => {
+            if (box.dataset.mark) return true;
+        });
+
+        if (tie) {
+            setPlay(false);
+        }
     };
+
+    // // // // // // // // // // // // // // //
+
+    const updateScore = function (winner) {
+        if (winner === 'x') setScore_x(prev => (prev = prev + 1));
+        if (winner === 'o') setScore_o(prev => (prev = prev + 1));
+        if (winner === 'tie') setScore_ties(prev => (prev = prev + 1));
+        console.log(winner);
+    };
+
+    // // // // // // // // // // // // // // //
 
     const setActive = ({ target }) => {
         if (play) {
@@ -200,6 +229,28 @@ const Game = function (props) {
                     data-mark=""
                 >
                     <img className={styles.mark_hover} src={undefined} alt="" />
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_x}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_x}
+                        </svg>
+                    }
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_o}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_o}
+                        </svg>
+                    }
                 </div>
 
                 <div
@@ -210,6 +261,28 @@ const Game = function (props) {
                     data-mark=""
                 >
                     <img className={styles.mark_hover} src={undefined} alt="" />
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_x}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_x}
+                        </svg>
+                    }
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_o}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_o}
+                        </svg>
+                    }
                 </div>
 
                 <div
@@ -220,6 +293,28 @@ const Game = function (props) {
                     data-mark=""
                 >
                     <img className={styles.mark_hover} src={undefined} alt="" />
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_x}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_x}
+                        </svg>
+                    }
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_o}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_o}
+                        </svg>
+                    }
                 </div>
 
                 <div
@@ -230,6 +325,28 @@ const Game = function (props) {
                     data-mark=""
                 >
                     <img className={styles.mark_hover} src={undefined} alt="" />
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_x}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_x}
+                        </svg>
+                    }
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_o}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_o}
+                        </svg>
+                    }
                 </div>
 
                 <div
@@ -240,6 +357,28 @@ const Game = function (props) {
                     data-mark=""
                 >
                     <img className={styles.mark_hover} src={undefined} alt="" />
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_x}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_x}
+                        </svg>
+                    }
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_o}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_o}
+                        </svg>
+                    }
                 </div>
 
                 <div
@@ -250,6 +389,28 @@ const Game = function (props) {
                     data-mark=""
                 >
                     <img className={styles.mark_hover} src={undefined} alt="" />
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_x}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_x}
+                        </svg>
+                    }
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_o}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_o}
+                        </svg>
+                    }
                 </div>
 
                 <div
@@ -260,6 +421,28 @@ const Game = function (props) {
                     data-mark=""
                 >
                     <img className={styles.mark_hover} src={undefined} alt="" />
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_x}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_x}
+                        </svg>
+                    }
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_o}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_o}
+                        </svg>
+                    }
                 </div>
 
                 <div
@@ -270,6 +453,28 @@ const Game = function (props) {
                     data-mark=""
                 >
                     <img className={styles.mark_hover} src={undefined} alt="" />
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_x}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_x}
+                        </svg>
+                    }
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_o}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_o}
+                        </svg>
+                    }
                 </div>
             </div>
 
