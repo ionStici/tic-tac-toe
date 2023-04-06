@@ -37,7 +37,7 @@
         border-radius: 10px;
     }
 
-    & > :first-child {
+    .turn_mark {
         transform: scale(0.25);
 
         path {
@@ -52,6 +52,18 @@
             transform: scale(0.315);
             top: -8px;
             left: 7px;
+        }
+
+        &_x {
+            transition: transform 0.2s;
+        }
+
+        &_o {
+            transition: transform 0.2s;
+        }
+
+        &_fade_out {
+            transform: scale(0);
         }
     }
 
@@ -115,6 +127,24 @@
     }
 }
 
+.mark_hover {
+    width: 40px;
+    height: 40px;
+
+    user-select: none;
+    pointer-events: none;
+    display: none;
+
+    @media only screen and (min-width: 768px) {
+        width: 64px;
+        height: 64px;
+    }
+
+    &_display {
+        display: block;
+    }
+}
+
 .x_winner {
     background-color: var(--color-light-blue);
     box-shadow: var(--shadow-light-blue);
@@ -125,62 +155,30 @@
     box-shadow: var(--shadow-light-yellow);
 }
 
-.mark_hover {
-    width: 40px;
-    height: 40px;
-
+.mark {
+    display: none;
     user-select: none;
     pointer-events: none;
-    opacity: 0;
 
-    @media only screen and (min-width: 768px) {
-        width: 64px;
-        height: 64px;
+    transform: scale(1.5);
+    transition: transform 0.25s;
+
+    &_x {
+        position: absolute;
+    }
+
+    &_o {
+        position: absolute;
+    }
+
+    &_display {
+        display: block;
+    }
+
+    &_fade_in {
+        transform: scale(1);
     }
 }
-
-.mark_hover_transition {
-    transition: opacity 0.25s ease-in-out;
-}
-
-.mark_hover_reveal {
-    opacity: 1;
-}
-
-// .mark_hidden {
-//     opacity: 0;
-//     user-select: none;
-//     pointer-events: none;
-// }
-
-// .mark {
-//     width: 40px;
-//     height: 40px;
-
-//     user-select: none;
-//     pointer-events: none;
-//     transition: opacity 0.15s;
-
-//     @media only screen and (min-width: 768px) {
-//         width: 64px;
-//         height: 64px;
-//     }
-// }
-
-// .mark_silver {
-//     position: absolute;
-//     z-index: 1;
-//     user-select: none;
-//     pointer-events: none;
-
-//     path {
-//         fill: var(--color-dark-navy);
-//     }
-// }
-
-// .mark_silver_hidden {
-//     // opacity: 0;
-// }
 
 // // // // // // // // // // // // // // //
 

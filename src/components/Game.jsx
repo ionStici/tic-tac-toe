@@ -1,17 +1,7 @@
 import styles from './../styles/Game.module.scss';
 import { ButtonReset } from './Buttons';
 import { assets } from '../assets/Assets';
-import React, { useState } from 'react';
-
-// prettier-ignore
-const x = (<svg className={styles.x} width="64" height="64" xmlns="http://www.w3.org/2000/svg">{assets.path_x}</svg>);
-// prettier-ignore
-const o = (<svg className={styles.o} width="64" height="64" xmlns="http://www.w3.org/2000/svg">{assets.path_o}</svg>);
-
-// prettier-ignore
-const icon_x = (<svg className={`${styles.mark_silver} ${styles.mark_silver_hidden}`} width="64" height="64" xmlns="http://www.w3.org/2000/svg">{assets.path_x}</svg>);
-// prettier-ignore
-const icon_o = (<svg className={`${styles.mark_silver} ${styles.mark_silver_hidden}`} width="64" height="64" xmlns="http://www.w3.org/2000/svg">{assets.path_o}</svg>);
+import React, { useState, useRef } from 'react';
 
 const Game = function (props) {
     const state = props.gameState;
@@ -26,80 +16,102 @@ const Game = function (props) {
 
     const [gameMode, setGameMode] = useState(state.gameMode);
     const [currentPlayer, setCurrentPlayer] = useState(state.currentPlayer);
-    const [mark, setMark] = useState(currentPlayer === 'x' ? x : o);
 
-    // const checkWinner = function (boxes) {
-    //     const marks = ['1', '2', '3', '4', '5', '6', '7', '8'].map(num => {
-    //         return [].slice.call(boxes).filter(t => t.classList.contains(num));
-    //     });
-
-    //     const winnerMarks = marks.filter(marks => {
-    //         return marks.every(mark => {
-    //             return mark.dataset.mark === currentPlayer;
-    //         });
-    //     });
-
-    //     winnerMarks[0]?.forEach(box => {
-    //         const svg = box.querySelector(`.${styles.mark_silver}`);
-
-    //         if (box.dataset.mark === 'x') {
-    //         }
-
-    //         if (box.dataset.mark === 'o') {
-    //         }
-    //     });
-
-    //     if (winnerMarks[0]) {
-    //         winnerMarks[0].forEach(box => {
-    //             if (box.dataset.mark === 'x') {
-    //                 box.classList.add(styles.x_winner);
-    //                 // box.querySelector('img').src = assets.icon_x_outline;
-    //             }
-
-    //             if (box.dataset.mark === 'o') {
-    //                 box.classList.add(styles.o_winner);
-    //                 // box.querySelector('img').src = assets.icon_o_outline;
-    //             }
-    //         });
-
-    //         setPlay(false);
-    //     }
-    // };
+    const checkWinner = function (boxes) {
+        //     const marks = ['1', '2', '3', '4', '5', '6', '7', '8'].map(num => {
+        //         return [].slice.call(boxes).filter(t => t.classList.contains(num));
+        //     });
+        //     const winnerMarks = marks.filter(marks => {
+        //         return marks.every(mark => {
+        //             return mark.dataset.mark === currentPlayer;
+        //         });
+        //     });
+        //     winnerMarks[0]?.forEach(box => {
+        //         const svg = box.querySelector(`.${styles.mark_silver}`);
+        //         if (box.dataset.mark === 'x') {
+        //         }
+        //         if (box.dataset.mark === 'o') {
+        //         }
+        //     });
+        //     if (winnerMarks[0]) {
+        //         winnerMarks[0].forEach(box => {
+        //             if (box.dataset.mark === 'x') {
+        //                 box.classList.add(styles.x_winner);
+        //                 // box.querySelector('img').src = assets.icon_x_outline;
+        //             }
+        //             if (box.dataset.mark === 'o') {
+        //                 box.classList.add(styles.o_winner);
+        //                 // box.querySelector('img').src = assets.icon_o_outline;
+        //             }
+        //         });
+        //         setPlay(false);
+        //     }
+    };
 
     const setActive = ({ target }) => {
         if (play) {
             if (target.dataset.mark) return;
+            target.dataset.mark = currentPlayer;
 
-            // target.dataset.mark = currentPlayer;
-            // const mark = currentPlayer === 'x' ? assets.path_x : assets.path_o;
+            const img = target.querySelector('img');
+            img.classList.remove(styles.mark_hover_display);
+            img.src = undefined;
+
+            let currTurnMark;
+            let nextTurnMark;
+
+            const x = target.querySelector(`.${styles.mark_x}`);
+            const o = target.querySelector(`.${styles.mark_o}`);
+
+            if (currentPlayer === 'x') {
+                currTurnMark = document.querySelector(`.${styles.turn_mark_x}`);
+                nextTurnMark = document.querySelector(`.${styles.turn_mark_o}`);
+                nextTurnMark.classList.add(styles.turn_mark_fade_out);
+
+                x?.classList.add(styles.mark_display);
+                setTimeout(() => x?.classList.add(styles.mark_fade_in), 1);
+            }
+
+            if (currentPlayer === 'o') {
+                currTurnMark = document.querySelector(`.${styles.turn_mark_o}`);
+                nextTurnMark = document.querySelector(`.${styles.turn_mark_x}`);
+
+                o?.classList.add(styles.mark_display);
+                setTimeout(() => o?.classList.add(styles.mark_fade_in), 1);
+            }
 
             if (currentPlayer === 'x') {
                 setCurrentPlayer('o');
-                setMark(o);
+
+                currTurnMark.classList.add(styles.turn_mark_fade_out);
+                nextTurnMark.classList.remove(styles.turn_mark_fade_out);
             }
 
             if (currentPlayer === 'o') {
                 setCurrentPlayer('x');
-                setMark(x);
+
+                currTurnMark.classList.add(styles.turn_mark_fade_out);
+                nextTurnMark.classList.remove(styles.turn_mark_fade_out);
             }
 
-            // checkWinner(target.parentElement.children);
+            checkWinner(target.parentElement.children);
         }
     };
+
+    // // // // // // // // // // // // // // //
+    // HOVER EVENTS
 
     const onHover = ({ target }) => {
         if (play) {
             if (target.dataset.mark) return;
 
             const img = target.querySelector('img');
-            const mark =
+
+            img.src =
                 currentPlayer === 'x'
                     ? assets.icon_x_outline
                     : assets.icon_o_outline;
-
-            img.src = mark;
-            img.classList.add(styles.mark_hover_transition);
-            img.classList.add(styles.mark_hover_reveal);
+            img.classList.add(styles.mark_hover_display);
         }
     };
 
@@ -109,18 +121,39 @@ const Game = function (props) {
 
             const img = target.querySelector('img');
 
-            img.classList.remove(styles.mark_hover_transition);
-            img.classList.remove(styles.mark_hover_reveal);
+            img.classList.remove(styles.mark_hover_display);
             img.src = undefined;
         }
     };
+
+    // // // // // // // // // // // // // // //
 
     return (
         <section className={styles.section}>
             <header className={styles.header}>
                 <img className={styles.logo} src={assets.logo} alt="" />
                 <div className={styles.middleBox}>
-                    {mark}
+                    {
+                        <svg
+                            className={`${styles.turn_mark} ${styles.turn_mark_x}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_x}
+                        </svg>
+                    }
+
+                    {
+                        <svg
+                            className={`${styles.turn_mark} ${styles.turn_mark_o}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_o}
+                        </svg>
+                    }
                     <p>Turn</p>
                 </div>
                 <ButtonReset icon={assets.icon_restart} />
@@ -135,6 +168,28 @@ const Game = function (props) {
                     data-mark=""
                 >
                     <img className={styles.mark_hover} src={undefined} alt="" />
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_x}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_x}
+                        </svg>
+                    }
+
+                    {
+                        <svg
+                            className={`${styles.mark} ${styles.mark_o}`}
+                            width="64"
+                            height="64"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            {assets.path_o}
+                        </svg>
+                    }
                 </div>
 
                 <div
