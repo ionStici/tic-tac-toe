@@ -57,6 +57,20 @@ const Game = function (props) {
         if (winnerMarks[0]) {
             if (winnerMarks[0][0].dataset.mark === 'x') updateScore('x');
             if (winnerMarks[0][0].dataset.mark === 'o') updateScore('o');
+
+            setTimeout(() => {
+                setPrompt(
+                    <Prompt
+                        message=""
+                        title="Restart Game?"
+                        cancel_text="No, Cancel"
+                        restart_text="Yes, Restart"
+                        cancel_event={closePrompt}
+                        restart_event={restartGame}
+                    />
+                );
+            }, 1000);
+
             return;
         }
 
@@ -68,6 +82,19 @@ const Game = function (props) {
         if (tie) {
             setPlay(false);
             updateScore('tie');
+
+            setTimeout(() => {
+                setPrompt(
+                    <Prompt
+                        message=""
+                        title="Restart Game?"
+                        cancel_text="No, Cancel"
+                        restart_text="Yes, Restart"
+                        cancel_event={closePrompt}
+                        restart_event={restartGame}
+                    />
+                );
+            }, 1000);
         }
     };
 
@@ -165,7 +192,7 @@ const Game = function (props) {
 
     const closePrompt = function () {
         document.body.classList.remove(styles.overflow_hidden);
-        console.log('exit prompt');
+        setPrompt('');
     };
 
     const restartGame = function () {
