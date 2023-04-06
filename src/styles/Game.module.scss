@@ -201,6 +201,7 @@
     pointer-events: none;
 
     transform: scale(1.5);
+    top: 12px;
 
     &_x {
         position: absolute;
@@ -216,7 +217,11 @@
 
     &_fade_in {
         transition: transform 0.25s;
-        transform: scale(1);
+        transform: scale(0.625);
+
+        @media only screen and (min-width: 768px) {
+            transform: scale(1);
+        }
     }
 
     &_winner path {
