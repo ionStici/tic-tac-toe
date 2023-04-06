@@ -1,0 +1,37 @@
+.section {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+
+    width: 100vw;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.container {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+
+    width: 100vw;
+    height: 228px;
+
+    background-color: var(--color-semi-dark-navy);
+
+    @media only screen and (min-width: 768px) {
+        height: 266px;
+    }
+}
+
+.message {
+}
+
+.title {
+}
+
+.button_box {
+}

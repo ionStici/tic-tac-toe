@@ -15,20 +15,12 @@ function App() {
         setGameState(state);
     };
 
-    // TEMPORARY
-    React.useEffect(() => setPlay(true), []);
-    React.useEffect(() => {
-        setGameState({
-            player1: 'x',
-            player2: 'o',
-            currentPlayer: 'x',
-            gameMode: '2',
-        });
-    }, []);
-    //
+    const restartGame = function () {
+        setPlay(false);
+    };
 
     if (!play) return <NewGame startNewGame={startNewGame} />;
-    if (play) return <Game gameState={gameState} />;
+    if (play) return <Game gameState={gameState} restartGame={restartGame} />;
 }
 
 export default App;

@@ -1,7 +1,8 @@
 import styles from './../styles/Game.module.scss';
 import { ButtonReset } from './Buttons';
 import { assets } from '../assets/Assets';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
+import Prompt from './Prompt';
 
 const Game = function (props) {
     const state = props.gameState;
@@ -16,6 +17,8 @@ const Game = function (props) {
     const [score_x, setScore_x] = useState(0);
     const [score_o, setScore_o] = useState(0);
     const [score_ties, setScore_ties] = useState(0);
+
+    const [prompt, setPrompt] = useState('');
 
     // // // // // // // // // // // // // // //
     // CHECK WINNER
@@ -54,6 +57,7 @@ const Game = function (props) {
         if (winnerMarks[0]) {
             if (winnerMarks[0][0].dataset.mark === 'x') updateScore('x');
             if (winnerMarks[0][0].dataset.mark === 'o') updateScore('o');
+            return;
         }
 
         // CHECK IF TIE
@@ -63,6 +67,7 @@ const Game = function (props) {
 
         if (tie) {
             setPlay(false);
+            updateScore('tie');
         }
     };
 
@@ -72,7 +77,6 @@ const Game = function (props) {
         if (winner === 'x') setScore_x(prev => (prev = prev + 1));
         if (winner === 'o') setScore_o(prev => (prev = prev + 1));
         if (winner === 'tie') setScore_ties(prev => (prev = prev + 1));
-        console.log(winner);
     };
 
     // // // // // // // // // // // // // // //
@@ -133,7 +137,6 @@ const Game = function (props) {
     const onHover = ({ target }) => {
         if (play) {
             if (target.dataset.mark) return;
-
             const img = target.querySelector('img');
 
             img.src =
@@ -141,364 +144,431 @@ const Game = function (props) {
                     ? assets.icon_x_outline
                     : assets.icon_o_outline;
             img.classList.add(styles.mark_hover_display);
+            setTimeout(() => img.classList.add(styles.mark_hover_show));
         }
     };
 
     const leaveHover = ({ target }) => {
         if (play) {
             if (target.dataset.mark) return;
-
             const img = target.querySelector('img');
 
-            img.classList.remove(styles.mark_hover_display);
-            img.src = undefined;
+            img.classList.remove(styles.mark_hover_show);
+            setTimeout(() => {
+                img.classList.remove(styles.mark_hover_display);
+                img.src = undefined;
+            }, 250);
         }
     };
 
     // // // // // // // // // // // // // // //
 
+    const closePrompt = function () {
+        document.body.classList.remove(styles.overflow_hidden);
+        console.log('exit prompt');
+    };
+
+    const restartGame = function () {
+        props.restartGame();
+    };
+
+    const handleReset = function () {
+        document.body.classList.add(styles.overflow_hidden);
+        setPrompt(
+            <Prompt
+                message=""
+                title="Restart Game?"
+                cancel_text="No, Cancel"
+                restart_text="Yes, Restart"
+                cancel_event={closePrompt}
+                restart_event={restartGame}
+            />
+        );
+    };
+
+    // // // // // // // // // // // // // // //
+
     return (
-        <section className={styles.section}>
-            <header className={styles.header}>
-                <img className={styles.logo} src={assets.logo} alt="" />
-                <div className={styles.middleBox}>
-                    {
-                        <svg
-                            className={`${styles.turn_mark} ${styles.turn_mark_x}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_x}
-                        </svg>
-                    }
+        <>
+            {prompt}
+            <section className={styles.section}>
+                <header className={styles.header}>
+                    <img className={styles.logo} src={assets.logo} alt="" />
+                    <div className={styles.middleBox}>
+                        {
+                            <svg
+                                className={`${styles.turn_mark} ${styles.turn_mark_x}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_x}
+                            </svg>
+                        }
 
-                    {
-                        <svg
-                            className={`${styles.turn_mark} ${styles.turn_mark_o}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_o}
-                        </svg>
-                    }
-                    <p>Turn</p>
+                        {
+                            <svg
+                                className={`${styles.turn_mark} ${styles.turn_mark_o} ${styles.turn_mark_fade_out}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_o}
+                            </svg>
+                        }
+                        <p>Turn</p>
+                    </div>
+                    <ButtonReset onClick={handleReset} />
+                </header>
+
+                <div className={styles.wrapper}>
+                    <div
+                        className={`${styles.box} 1 4 8`}
+                        onClick={setActive}
+                        onMouseOver={onHover}
+                        onMouseOut={leaveHover}
+                        data-mark=""
+                    >
+                        <img
+                            className={styles.mark_hover}
+                            src={undefined}
+                            alt=""
+                        />
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_x}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_x}
+                            </svg>
+                        }
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_o}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_o}
+                            </svg>
+                        }
+                    </div>
+
+                    <div
+                        className={`${styles.box} 1 5`}
+                        onClick={setActive}
+                        onMouseOver={onHover}
+                        onMouseOut={leaveHover}
+                        data-mark=""
+                    >
+                        <img
+                            className={styles.mark_hover}
+                            src={undefined}
+                            alt=""
+                        />
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_x}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_x}
+                            </svg>
+                        }
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_o}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_o}
+                            </svg>
+                        }
+                    </div>
+
+                    <div
+                        className={`${styles.box} 1 6 7`}
+                        onClick={setActive}
+                        onMouseOver={onHover}
+                        onMouseOut={leaveHover}
+                        data-mark=""
+                    >
+                        <img
+                            className={styles.mark_hover}
+                            src={undefined}
+                            alt=""
+                        />
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_x}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_x}
+                            </svg>
+                        }
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_o}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_o}
+                            </svg>
+                        }
+                    </div>
+
+                    <div
+                        className={`${styles.box} 2 4`}
+                        onClick={setActive}
+                        onMouseOver={onHover}
+                        onMouseOut={leaveHover}
+                        data-mark=""
+                    >
+                        <img
+                            className={styles.mark_hover}
+                            src={undefined}
+                            alt=""
+                        />
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_x}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_x}
+                            </svg>
+                        }
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_o}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_o}
+                            </svg>
+                        }
+                    </div>
+
+                    <div
+                        className={`${styles.box} 2 5 7 8`}
+                        onClick={setActive}
+                        onMouseOver={onHover}
+                        onMouseOut={leaveHover}
+                        data-mark=""
+                    >
+                        <img
+                            className={styles.mark_hover}
+                            src={undefined}
+                            alt=""
+                        />
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_x}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_x}
+                            </svg>
+                        }
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_o}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_o}
+                            </svg>
+                        }
+                    </div>
+
+                    <div
+                        className={`${styles.box} 2 6`}
+                        onClick={setActive}
+                        onMouseOver={onHover}
+                        onMouseOut={leaveHover}
+                        data-mark=""
+                    >
+                        <img
+                            className={styles.mark_hover}
+                            src={undefined}
+                            alt=""
+                        />
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_x}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_x}
+                            </svg>
+                        }
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_o}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_o}
+                            </svg>
+                        }
+                    </div>
+
+                    <div
+                        className={`${styles.box} 3 4 7`}
+                        onClick={setActive}
+                        onMouseOver={onHover}
+                        onMouseOut={leaveHover}
+                        data-mark=""
+                    >
+                        <img
+                            className={styles.mark_hover}
+                            src={undefined}
+                            alt=""
+                        />
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_x}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_x}
+                            </svg>
+                        }
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_o}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_o}
+                            </svg>
+                        }
+                    </div>
+
+                    <div
+                        className={`${styles.box} 3 5`}
+                        onClick={setActive}
+                        onMouseOver={onHover}
+                        onMouseOut={leaveHover}
+                        data-mark=""
+                    >
+                        <img
+                            className={styles.mark_hover}
+                            src={undefined}
+                            alt=""
+                        />
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_x}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_x}
+                            </svg>
+                        }
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_o}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_o}
+                            </svg>
+                        }
+                    </div>
+
+                    <div
+                        className={`${styles.box} 3 6 8`}
+                        onClick={setActive}
+                        onMouseOver={onHover}
+                        onMouseOut={leaveHover}
+                        data-mark=""
+                    >
+                        <img
+                            className={styles.mark_hover}
+                            src={undefined}
+                            alt=""
+                        />
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_x}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_x}
+                            </svg>
+                        }
+
+                        {
+                            <svg
+                                className={`${styles.mark} ${styles.mark_o}`}
+                                width="64"
+                                height="64"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                {assets.path_o}
+                            </svg>
+                        }
+                    </div>
                 </div>
-                <ButtonReset icon={assets.icon_restart} />
-            </header>
 
-            <div className={styles.wrapper}>
-                <div
-                    className={`${styles.box} 1 4 8`}
-                    onClick={setActive}
-                    onMouseOver={onHover}
-                    onMouseOut={leaveHover}
-                    data-mark=""
-                >
-                    <img className={styles.mark_hover} src={undefined} alt="" />
+                <footer className={styles.footer}>
+                    <div className={`${styles.total_x} ${styles.total}`}>
+                        <p className={styles.title}>
+                            X ({player1 === 'x' ? 'P1' : 'P2'})
+                        </p>
+                        <p className={styles.score}>{score_x}</p>
+                    </div>
 
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_x}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_x}
-                        </svg>
-                    }
+                    <div className={`${styles.total_ties} ${styles.total}`}>
+                        <p className={styles.title}>Ties</p>
+                        <p className={styles.score}>{score_ties}</p>
+                    </div>
 
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_o}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_o}
-                        </svg>
-                    }
-                </div>
-
-                <div
-                    className={`${styles.box} 1 5`}
-                    onClick={setActive}
-                    onMouseOver={onHover}
-                    onMouseOut={leaveHover}
-                    data-mark=""
-                >
-                    <img className={styles.mark_hover} src={undefined} alt="" />
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_x}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_x}
-                        </svg>
-                    }
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_o}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_o}
-                        </svg>
-                    }
-                </div>
-
-                <div
-                    className={`${styles.box} 1 6 7`}
-                    onClick={setActive}
-                    onMouseOver={onHover}
-                    onMouseOut={leaveHover}
-                    data-mark=""
-                >
-                    <img className={styles.mark_hover} src={undefined} alt="" />
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_x}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_x}
-                        </svg>
-                    }
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_o}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_o}
-                        </svg>
-                    }
-                </div>
-
-                <div
-                    className={`${styles.box} 2 4`}
-                    onClick={setActive}
-                    onMouseOver={onHover}
-                    onMouseOut={leaveHover}
-                    data-mark=""
-                >
-                    <img className={styles.mark_hover} src={undefined} alt="" />
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_x}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_x}
-                        </svg>
-                    }
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_o}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_o}
-                        </svg>
-                    }
-                </div>
-
-                <div
-                    className={`${styles.box} 2 5 7 8`}
-                    onClick={setActive}
-                    onMouseOver={onHover}
-                    onMouseOut={leaveHover}
-                    data-mark=""
-                >
-                    <img className={styles.mark_hover} src={undefined} alt="" />
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_x}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_x}
-                        </svg>
-                    }
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_o}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_o}
-                        </svg>
-                    }
-                </div>
-
-                <div
-                    className={`${styles.box} 2 6`}
-                    onClick={setActive}
-                    onMouseOver={onHover}
-                    onMouseOut={leaveHover}
-                    data-mark=""
-                >
-                    <img className={styles.mark_hover} src={undefined} alt="" />
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_x}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_x}
-                        </svg>
-                    }
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_o}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_o}
-                        </svg>
-                    }
-                </div>
-
-                <div
-                    className={`${styles.box} 3 4 7`}
-                    onClick={setActive}
-                    onMouseOver={onHover}
-                    onMouseOut={leaveHover}
-                    data-mark=""
-                >
-                    <img className={styles.mark_hover} src={undefined} alt="" />
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_x}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_x}
-                        </svg>
-                    }
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_o}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_o}
-                        </svg>
-                    }
-                </div>
-
-                <div
-                    className={`${styles.box} 3 5`}
-                    onClick={setActive}
-                    onMouseOver={onHover}
-                    onMouseOut={leaveHover}
-                    data-mark=""
-                >
-                    <img className={styles.mark_hover} src={undefined} alt="" />
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_x}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_x}
-                        </svg>
-                    }
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_o}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_o}
-                        </svg>
-                    }
-                </div>
-
-                <div
-                    className={`${styles.box} 3 6 8`}
-                    onClick={setActive}
-                    onMouseOver={onHover}
-                    onMouseOut={leaveHover}
-                    data-mark=""
-                >
-                    <img className={styles.mark_hover} src={undefined} alt="" />
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_x}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_x}
-                        </svg>
-                    }
-
-                    {
-                        <svg
-                            className={`${styles.mark} ${styles.mark_o}`}
-                            width="64"
-                            height="64"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            {assets.path_o}
-                        </svg>
-                    }
-                </div>
-            </div>
-
-            <footer className={styles.footer}>
-                <div className={`${styles.total_x} ${styles.total}`}>
-                    <p className={styles.title}>
-                        X ({player1 === 'x' ? 'P1' : 'P2'})
-                    </p>
-                    <p className={styles.score}>{score_x}</p>
-                </div>
-
-                <div className={`${styles.total_ties} ${styles.total}`}>
-                    <p className={styles.title}>Ties</p>
-                    <p className={styles.score}>{score_ties}</p>
-                </div>
-
-                <div className={`${styles.total_o} ${styles.total}`}>
-                    <p className={styles.title}>
-                        O ({player1 === 'x' ? 'P2' : 'P1'})
-                    </p>
-                    <p className={styles.score}>{score_o}</p>
-                </div>
-            </footer>
-        </section>
+                    <div className={`${styles.total_o} ${styles.total}`}>
+                        <p className={styles.title}>
+                            O ({player1 === 'x' ? 'P2' : 'P1'})
+                        </p>
+                        <p className={styles.score}>{score_o}</p>
+                    </div>
+                </footer>
+            </section>
+        </>
     );
 };
 

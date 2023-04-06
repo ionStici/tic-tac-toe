@@ -1,4 +1,5 @@
 import styles from './../styles/Buttons.module.scss';
+import { assets } from '../assets/Assets';
 
 // // // // // // // // // // // // // // //
 
@@ -23,6 +24,7 @@ const ButtonSecond = function (props) {
         <button
             // prettier-ignore
             className={`${styles.btn_second} ${props.color === 'silver' ? styles.btn_second_silver : ''} ${props.color === 'yellow' ? styles.btn_second_yellow : ''}`}
+            onClick={props.onClick}
         >
             {props.text}
         </button>
@@ -33,8 +35,13 @@ const ButtonSecond = function (props) {
 
 const ButtonReset = function (props) {
     return (
-        <div className={`${styles.btn_reset}`} role="button" aria-label="Reset">
-            <img src={props.icon} alt="Reset" />
+        <div
+            className={`${styles.btn_reset}`}
+            onClick={props.onClick}
+            role="button"
+            aria-label="Reset"
+        >
+            <img src={assets.icon_restart} alt="Reset" />
         </div>
     );
 };
