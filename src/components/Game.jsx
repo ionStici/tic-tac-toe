@@ -343,6 +343,11 @@ const Game = function (props) {
         setPlay(true);
 
         closePrompt();
+
+        if (gameMode === '1' && player2 === 'x') {
+            setPlay(false);
+            setTimeout(() => cpu_move_easy(), 500);
+        }
     };
 
     // // // // // // // // // // // // // // //
