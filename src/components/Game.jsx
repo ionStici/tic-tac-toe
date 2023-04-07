@@ -21,24 +21,6 @@ const Game = function (props) {
     const [prompt, setPrompt] = useState('');
 
     // // // // // // // // // // // // // // //
-    const [history, setHistory] = useState([]);
-
-    const setLocalStorage = function () {
-        setHistory(prev => () => {
-            prev.push({
-                name: 'test',
-            });
-        });
-    };
-    // setLocalStorage();
-
-    const getLocalStorage = function () {
-        const data = '';
-        setHistory(data);
-    };
-    // getLocalStorage();
-
-    // // // // // // // // // // // // // // //
     // CHECK WINNER
 
     const checkWinner = function (boxes) {
@@ -76,19 +58,6 @@ const Game = function (props) {
             if (winnerMarks[0][0].dataset.mark === 'x') updateScore('x');
             if (winnerMarks[0][0].dataset.mark === 'o') updateScore('o');
 
-            setTimeout(() => {
-                setPrompt(
-                    <Prompt
-                        message=""
-                        title="Restart Game?"
-                        cancel_text="No, Cancel"
-                        restart_text="Yes, Restart"
-                        cancel_event={closePrompt}
-                        restart_event={nextRound}
-                    />
-                );
-            }, 500);
-
             return;
         }
 
@@ -100,19 +69,6 @@ const Game = function (props) {
         if (tie) {
             setPlay(false);
             updateScore('tie');
-
-            setTimeout(() => {
-                setPrompt(
-                    <Prompt
-                        message=""
-                        title="Restart Game?"
-                        cancel_text="No, Cancel"
-                        restart_text="Yes, Restart"
-                        cancel_event={closePrompt}
-                        restart_event={nextRound}
-                    />
-                );
-            }, 500);
         }
     };
 
@@ -209,18 +165,20 @@ const Game = function (props) {
     // // // // // // // // // // // // // // //
     // CONTROL EVENTS
 
+    // CLOSE PROMPT
     const closePrompt = function () {
         document.body.classList.remove(styles.overflow_hidden);
         setPrompt('');
     };
 
+    // RESTART
     const restartGame = function () {
         props.restartGame();
     };
 
+    // NEXT
     const nextRound = function () {
-        const boxes = document.querySelectorAll(`.${styles.box}`);
-        boxes.forEach(box => {
+        document.querySelectorAll(`.${styles.box}`).forEach(box => {
             box.dataset.mark = '';
 
             const x = box.querySelector(`.${styles.mark_x}`);
@@ -251,19 +209,60 @@ const Game = function (props) {
         closePrompt();
     };
 
-    const handleReset = function () {
+    // // // // // // // // // // // // // // //
+
+    const handle_prompt = function (type, winner) {
         document.body.classList.add(styles.overflow_hidden);
-        setPrompt(
-            <Prompt
-                message=""
-                title="Restart Game?"
-                cancel_text="No, Cancel"
-                restart_text="Yes, Restart"
-                cancel_event={closePrompt}
-                restart_event={nextRound}
-            />
-        );
+
+        if (type === 'restart') {
+            setPrompt(
+                <Prompt
+                    type="restart"
+                    title="Restart Game?"
+                    cancel_text="No, Cancel"
+                    restart_text="Yes, Restart"
+                    cancel_event={closePrompt}
+                    restart_event={restartGame}
+                />
+            );
+        }
+
+        if (type === 'tie') {
+            setPrompt(
+                <Prompt
+                    title="Round Tied"
+                    cancel_text="Quit"
+                    restart_text="Next Round"
+                    quit_event={restartGame}
+                    next_event={nextRound}
+                />
+            );
+        }
+
+        if (type === 'next') {
+            let num;
+            if (winner === player1) num = '1';
+            if (winner === player2) num = '2';
+
+            setPrompt(
+                <Prompt
+                    message={`Player ${num} Wins!`}
+                    winner={winner}
+                    icon={winner === 'x' ? assets.icon_x : assets.icon_o}
+                    title="Takes the round"
+                    cancel_text="Quit"
+                    restart_text="Next Round"
+                    quit_event={restartGame}
+                    next_event={nextRound}
+                />
+            );
+        }
     };
+
+    const handle_restart = () => handle_prompt('restart');
+    const handle_tie = () => handle_prompt('tie');
+    const handle_winner_x = () => handle_prompt('next', 'x');
+    const handle_winner_o = () => handle_prompt('next', 'o');
 
     // // // // // // // // // // // // // // //
 
@@ -297,7 +296,7 @@ const Game = function (props) {
                         }
                         <p>Turn</p>
                     </div>
-                    <ButtonReset onClick={handleReset} />
+                    <ButtonReset onClick={handle_restart} />
                 </header>
 
                 <div className={styles.wrapper}>

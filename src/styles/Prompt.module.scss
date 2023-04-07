@@ -72,17 +72,43 @@
 }
 
 .message {
-}
+    color: var(--color-silver);
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: 0.875px;
 
-// // // // // // // // // // // // // // //
+    margin-bottom: 16px;
+
+    @media only screen and (min-width: 768px) {
+        font-size: 16px;
+        line-height: 20px;
+        letter-spacing: 1px;
+    }
+}
 
 .title_box {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 9px;
+    margin-bottom: 24px;
+
+    @media only screen and (min-width: 768px) {
+        gap: 24px;
+        margin-bottom: 31px;
+    }
 }
 
 .icon {
+    width: 30px;
+    height: 30px;
+
+    @media only screen and (min-width: 768px) {
+        width: revert;
+        height: revert;
+    }
 }
 
 .title {
@@ -93,7 +119,11 @@
     line-height: 30px;
     letter-spacing: 1.5px;
 
-    margin-bottom: 24px;
+    @media only screen and (min-width: 768px) {
+        font-size: 40px;
+        line-height: 50px;
+        letter-spacing: 2.5px;
+    }
 }
 
 // // // // // // // // // // // // // // //
