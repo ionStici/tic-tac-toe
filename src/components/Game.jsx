@@ -159,6 +159,11 @@ const Game = function (props) {
             }
 
             setPlay(false);
+            const check = checkWinnerCPU();
+            if (check) {
+                setTimeout(() => handle_you_win(player1), 500);
+                return;
+            }
             setTimeout(() => cpu_move_easy(), 500);
         }
     };
@@ -186,6 +191,11 @@ const Game = function (props) {
             setTimeout(() => icon_o?.classList.add(styles.mark_fade_in), 1);
         }
 
+        const check = checkWinnerCPU();
+        if (check) {
+            setTimeout(() => handle_cpu_win(player2), 500);
+            return;
+        }
         setPlay(true);
     };
 
@@ -200,6 +210,51 @@ const Game = function (props) {
             cpuFirstMove = true;
         }
     }, []);
+
+    const checkWinnerCPU = function () {
+        const boxes = [...document.querySelectorAll(`.${styles.box}`)];
+        const lines = ['1', '2', '3', '4', '5', '6', '7', '8'].map(num => {
+            return boxes.filter(t => t.classList.contains(num));
+        });
+
+        const line_x = lines.filter(line => {
+            return line.every(box => box.dataset.mark === 'x');
+        });
+
+        const line_o = lines.filter(line => {
+            return line.every(box => box.dataset.mark === 'o');
+        });
+
+        if (line_x[0]) {
+            line_x[0].forEach(box => {
+                let svg;
+                svg = box.querySelector(`.${styles.mark_x}`);
+                box.classList.add(styles.x_winner);
+
+                svg.classList.add(styles.mark_winner);
+                svg.classList.remove(styles.mark_fade_in);
+                setTimeout(() => svg.classList.add(styles.mark_fade_in), 1);
+
+                cpuFirstMove = false;
+            });
+            return true;
+        }
+
+        if (line_o[0]) {
+            line_o[0].forEach(box => {
+                let svg;
+                svg = box.querySelector(`.${styles.mark_o}`);
+                box.classList.add(styles.o_winner);
+
+                svg.classList.add(styles.mark_winner);
+                svg.classList.remove(styles.mark_fade_in);
+                setTimeout(() => svg.classList.add(styles.mark_fade_in), 1);
+
+                cpuFirstMove = false;
+            });
+            return true;
+        }
+    };
 
     // // // // // // // // // // // // // // //
     // HOVER EVENTS
@@ -345,6 +400,29 @@ const Game = function (props) {
                 />
             );
         }
+
+        if (type === 'cpu') {
+            const youLost = 'Oh no, you lost...';
+            const youWin = 'You won!';
+
+            setPrompt(
+                <Prompt
+                    winner={winner}
+                    //
+                    type={false}
+                    icon={winner === 'x' ? assets.icon_x : assets.icon_o}
+                    //
+                    message={winner === player1 ? youWin : youLost}
+                    title="Takes the round"
+                    //
+                    cancel_text="Quit"
+                    restart_text="Next Round"
+                    //
+                    quit_event={restartGame}
+                    next_event={nextRound}
+                />
+            );
+        }
     };
 
     const handle_restart = () => handle_prompt('restart');
@@ -353,8 +431,8 @@ const Game = function (props) {
     const handle_winner_x = () => handle_prompt('next', 'x');
     const handle_winner_o = () => handle_prompt('next', 'o');
 
-    const handle_you_win = () => handle_prompt();
-    const handle_cpu_win = () => handle_prompt();
+    const handle_you_win = winner => handle_prompt('cpu', winner);
+    const handle_cpu_win = winner => handle_prompt('cpu', winner);
 
     // // // // // // // // // // // // // // //
 
