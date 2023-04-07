@@ -27,11 +27,34 @@ const Game = function (props) {
         const marks = ['1', '2', '3', '4', '5', '6', '7', '8'].map(num => {
             return [].slice.call(boxes).filter(t => t.classList.contains(num));
         });
-        const winnerMarks = marks.filter(marks => {
-            return marks.every(mark => {
-                return mark.dataset.mark === currentPlayer;
+
+        let winnerMarks = [];
+
+        if (state.gameMode === '1') {
+            winnerMarks = marks.filter(marks => {
+                return marks.every(mark => {
+                    return mark.dataset.mark === 'x';
+                });
             });
-        });
+        }
+
+        if (!winnerMarks[0]) {
+            winnerMarks = marks.filter(marks => {
+                return marks.every(mark => {
+                    return mark.dataset.mark === 'o';
+                });
+            });
+        }
+
+        if (state.gameMode === '2') {
+            winnerMarks = marks.filter(marks => {
+                return marks.every(mark => {
+                    return mark.dataset.mark === currentPlayer;
+                });
+            });
+        }
+
+        console.log(winnerMarks);
 
         winnerMarks[0]?.forEach(box => {
             let svg;
@@ -219,6 +242,7 @@ const Game = function (props) {
                 }
 
                 checkWinner(target.parentElement.children);
+
                 setPlay(true);
             }, 500);
         }
