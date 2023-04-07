@@ -55,10 +55,14 @@ const Game = function (props) {
 
         // UPDATE SCORE
         if (winnerMarks[0]) {
-            if (winnerMarks[0][0].dataset.mark === 'x') updateScore('x');
-            if (winnerMarks[0][0].dataset.mark === 'o') updateScore('o');
-
-            return;
+            if (winnerMarks[0][0].dataset.mark === 'x') {
+                updateScore('x');
+                setTimeout(() => handle_winner_x(), 500);
+            }
+            if (winnerMarks[0][0].dataset.mark === 'o') {
+                updateScore('o');
+                setTimeout(() => handle_winner_o(), 500);
+            }
         }
 
         // CHECK IF TIE
@@ -69,6 +73,7 @@ const Game = function (props) {
         if (tie) {
             setPlay(false);
             updateScore('tie');
+            setTimeout(() => handle_tie(), 500);
         }
     };
 
@@ -83,8 +88,9 @@ const Game = function (props) {
     // // // // // // // // // // // // // // //
 
     const setActive = ({ target }) => {
-        if (play) {
+        if (play && state.gameMode === '2') {
             if (target.dataset.mark) return;
+
             target.dataset.mark = currentPlayer;
 
             const img = target.querySelector('img');
@@ -129,6 +135,92 @@ const Game = function (props) {
             }
 
             checkWinner(target.parentElement.children);
+        }
+
+        if (play && state.gameMode === '1') {
+            if (target.dataset.mark) return;
+            target.dataset.mark = currentPlayer;
+
+            const img = target.querySelector('img');
+            img.classList.remove(styles.mark_hover_display);
+            img.src = undefined;
+
+            let currTurnMark;
+            let nextTurnMark;
+
+            // // // // // // // // // // // // // // //
+
+            const x = target.querySelector(`.${styles.mark_x}`);
+            const o = target.querySelector(`.${styles.mark_o}`);
+
+            if (currentPlayer === 'x') {
+                currTurnMark = document.querySelector(`.${styles.turn_mark_x}`);
+                nextTurnMark = document.querySelector(`.${styles.turn_mark_o}`);
+                nextTurnMark.classList.add(styles.turn_mark_fade_out);
+
+                x?.classList.add(styles.mark_display);
+                setTimeout(() => x?.classList.add(styles.mark_fade_in), 1);
+            }
+
+            if (currentPlayer === 'o') {
+                currTurnMark = document.querySelector(`.${styles.turn_mark_o}`);
+                nextTurnMark = document.querySelector(`.${styles.turn_mark_x}`);
+
+                o?.classList.add(styles.mark_display);
+                setTimeout(() => o?.classList.add(styles.mark_fade_in), 1);
+            }
+
+            if (currentPlayer === 'x') {
+                currTurnMark.classList.add(styles.turn_mark_fade_out);
+                nextTurnMark.classList.remove(styles.turn_mark_fade_out);
+            }
+
+            if (currentPlayer === 'o') {
+                currTurnMark.classList.add(styles.turn_mark_fade_out);
+                nextTurnMark.classList.remove(styles.turn_mark_fade_out);
+            }
+
+            // // // // // // // // // // // // // // //
+
+            checkWinner(target.parentElement.children);
+
+            // // // // // // // // // // // // // // //
+
+            setPlay(false);
+            setTimeout(() => {
+                const boxes = [...document.querySelectorAll(`.${styles.box}`)];
+                const emptyBoxes = boxes.filter(box => box.dataset.mark === '');
+                const length = emptyBoxes.length;
+                if (length === 0) return;
+
+                const random = Math.floor(Math.random() * length + 1);
+                const box = emptyBoxes[random - 1];
+
+                const mark = currentPlayer === 'x' ? 'o' : 'x';
+                box.dataset.mark = mark;
+
+                const cpu_x = box.querySelector(`.${styles.mark_x}`);
+                const cpu_o = box.querySelector(`.${styles.mark_o}`);
+
+                if (mark === 'x') {
+                    cpu_x.classList.add(styles.mark_display);
+
+                    setTimeout(() => {
+                        cpu_x.classList.add(styles.mark_fade_in);
+                    }, 1);
+                }
+
+                if (mark === 'o') {
+                    cpu_o.classList.add(styles.mark_display);
+
+                    setTimeout(() => {
+                        cpu_o.classList.add(styles.mark_fade_in);
+                    }, 1);
+                }
+
+                checkWinner(target.parentElement.children);
+                setPlay(true);
+            }, 500);
         }
     };
 
