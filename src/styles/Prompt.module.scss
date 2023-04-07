@@ -12,7 +12,7 @@
 }
 
 .layout {
-    animation: scale-in-ver-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    animation: scale-in-ver-center 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94)
         both;
 
     position: fixed;
@@ -33,14 +33,17 @@
         opacity: 0;
     }
 
+    50% {
+        opacity: 1;
+    }
+
     100% {
         transform: scale(1) translateY(-50%);
-        opacity: 1;
     }
 }
 
 .section {
-    animation: fade-in-bck 0.6s cubic-bezier(0.39, 0.575, 0.565, 1) both 0.25s;
+    animation: fade-in-bck 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) both 0.2s;
 
     position: fixed;
     left: 0;

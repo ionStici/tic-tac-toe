@@ -21,6 +21,24 @@ const Game = function (props) {
     const [prompt, setPrompt] = useState('');
 
     // // // // // // // // // // // // // // //
+    const [history, setHistory] = useState([]);
+
+    const setLocalStorage = function () {
+        setHistory(prev => () => {
+            prev.push({
+                name: 'test',
+            });
+        });
+    };
+    // setLocalStorage();
+
+    const getLocalStorage = function () {
+        const data = '';
+        setHistory(data);
+    };
+    // getLocalStorage();
+
+    // // // // // // // // // // // // // // //
     // CHECK WINNER
 
     const checkWinner = function (boxes) {
@@ -66,10 +84,10 @@ const Game = function (props) {
                         cancel_text="No, Cancel"
                         restart_text="Yes, Restart"
                         cancel_event={closePrompt}
-                        restart_event={restartGame}
+                        restart_event={nextRound}
                     />
                 );
-            }, 1000);
+            }, 500);
 
             return;
         }
@@ -91,10 +109,10 @@ const Game = function (props) {
                         cancel_text="No, Cancel"
                         restart_text="Yes, Restart"
                         cancel_event={closePrompt}
-                        restart_event={restartGame}
+                        restart_event={nextRound}
                     />
                 );
-            }, 1000);
+            }, 500);
         }
     };
 
@@ -189,6 +207,7 @@ const Game = function (props) {
     };
 
     // // // // // // // // // // // // // // //
+    // CONTROL EVENTS
 
     const closePrompt = function () {
         document.body.classList.remove(styles.overflow_hidden);
@@ -197,6 +216,39 @@ const Game = function (props) {
 
     const restartGame = function () {
         props.restartGame();
+    };
+
+    const nextRound = function () {
+        const boxes = document.querySelectorAll(`.${styles.box}`);
+        boxes.forEach(box => {
+            box.dataset.mark = '';
+
+            const x = box.querySelector(`.${styles.mark_x}`);
+            const o = box.querySelector(`.${styles.mark_o}`);
+
+            x?.classList.remove(styles.mark_display);
+            x?.classList.remove(styles.mark_fade_in);
+            x?.classList.remove(styles.mark_winner);
+
+            o?.classList.remove(styles.mark_display);
+            o?.classList.remove(styles.mark_fade_in);
+            o?.classList.remove(styles.mark_winner);
+
+            box.classList.remove(styles.x_winner);
+            box.classList.remove(styles.o_winner);
+        });
+
+        document
+            .querySelector(`.${styles.turn_mark_x}`)
+            .classList.remove(styles.turn_mark_fade_out);
+        document
+            .querySelector(`.${styles.turn_mark_o}`)
+            .classList.add(styles.turn_mark_fade_out);
+
+        setCurrentPlayer('x');
+        setPlay(true);
+
+        closePrompt();
     };
 
     const handleReset = function () {
@@ -208,7 +260,7 @@ const Game = function (props) {
                 cancel_text="No, Cancel"
                 restart_text="Yes, Restart"
                 cancel_event={closePrompt}
-                restart_event={restartGame}
+                restart_event={nextRound}
             />
         );
     };
