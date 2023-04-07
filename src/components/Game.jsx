@@ -1,7 +1,7 @@
 import styles from './../styles/Game.module.scss';
 import { ButtonReset } from './Buttons';
 import { assets } from '../assets/Assets';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Prompt from './Prompt';
 
 const Game = function (props) {
@@ -13,6 +13,7 @@ const Game = function (props) {
 
     const [gameMode, setGameMode] = useState(state.gameMode);
     const [currentPlayer, setCurrentPlayer] = useState(state.currentPlayer);
+    let cpuFirstMove = false;
 
     const [score_x, setScore_x] = useState(0);
     const [score_o, setScore_o] = useState(0);
@@ -28,33 +29,9 @@ const Game = function (props) {
             return [].slice.call(boxes).filter(t => t.classList.contains(num));
         });
 
-        let winnerMarks = [];
-
-        if (state.gameMode === '1') {
-            winnerMarks = marks.filter(marks => {
-                return marks.every(mark => {
-                    return mark.dataset.mark === 'x';
-                });
-            });
-        }
-
-        if (!winnerMarks[0]) {
-            winnerMarks = marks.filter(marks => {
-                return marks.every(mark => {
-                    return mark.dataset.mark === 'o';
-                });
-            });
-        }
-
-        if (state.gameMode === '2') {
-            winnerMarks = marks.filter(marks => {
-                return marks.every(mark => {
-                    return mark.dataset.mark === currentPlayer;
-                });
-            });
-        }
-
-        console.log(winnerMarks);
+        const winnerMarks = marks.filter(marks => {
+            return marks.every(mark => mark.dataset.mark === currentPlayer);
+        });
 
         winnerMarks[0]?.forEach(box => {
             let svg;
@@ -111,7 +88,7 @@ const Game = function (props) {
     // // // // // // // // // // // // // // //
 
     const setActive = ({ target }) => {
-        if (play && state.gameMode === '2') {
+        if (play && gameMode === '2') {
             if (target.dataset.mark) return;
 
             target.dataset.mark = currentPlayer;
@@ -160,93 +137,69 @@ const Game = function (props) {
             checkWinner(target.parentElement.children);
         }
 
-        if (play && state.gameMode === '1') {
+        if (play && gameMode === '1') {
             if (target.dataset.mark) return;
-            target.dataset.mark = currentPlayer;
+            target.dataset.mark = player1;
 
             const img = target.querySelector('img');
             img.classList.remove(styles.mark_hover_display);
             img.src = undefined;
 
-            let currTurnMark;
-            let nextTurnMark;
+            const icon_x = target.querySelector(`.${styles.mark_x}`);
+            const icon_o = target.querySelector(`.${styles.mark_o}`);
 
-            // // // // // // // // // // // // // // //
-
-            const x = target.querySelector(`.${styles.mark_x}`);
-            const o = target.querySelector(`.${styles.mark_o}`);
-
-            if (currentPlayer === 'x') {
-                currTurnMark = document.querySelector(`.${styles.turn_mark_x}`);
-                nextTurnMark = document.querySelector(`.${styles.turn_mark_o}`);
-                nextTurnMark.classList.add(styles.turn_mark_fade_out);
-
-                x?.classList.add(styles.mark_display);
-                setTimeout(() => x?.classList.add(styles.mark_fade_in), 1);
+            if (player1 === 'x') {
+                icon_x?.classList.add(styles.mark_display);
+                setTimeout(() => icon_x?.classList.add(styles.mark_fade_in), 1);
             }
 
-            if (currentPlayer === 'o') {
-                currTurnMark = document.querySelector(`.${styles.turn_mark_o}`);
-                nextTurnMark = document.querySelector(`.${styles.turn_mark_x}`);
-
-                o?.classList.add(styles.mark_display);
-                setTimeout(() => o?.classList.add(styles.mark_fade_in), 1);
+            if (player1 === 'o') {
+                icon_o?.classList.add(styles.mark_display);
+                setTimeout(() => icon_o?.classList.add(styles.mark_fade_in), 1);
             }
-
-            if (currentPlayer === 'x') {
-                currTurnMark.classList.add(styles.turn_mark_fade_out);
-                nextTurnMark.classList.remove(styles.turn_mark_fade_out);
-            }
-
-            if (currentPlayer === 'o') {
-                currTurnMark.classList.add(styles.turn_mark_fade_out);
-                nextTurnMark.classList.remove(styles.turn_mark_fade_out);
-            }
-
-            // // // // // // // // // // // // // // //
-
-            checkWinner(target.parentElement.children);
-
-            // // // // // // // // // // // // // // //
 
             setPlay(false);
-            setTimeout(() => {
-                const boxes = [...document.querySelectorAll(`.${styles.box}`)];
-                const emptyBoxes = boxes.filter(box => box.dataset.mark === '');
-                const length = emptyBoxes.length;
-                if (length === 0) return;
-
-                const random = Math.floor(Math.random() * length + 1);
-                const box = emptyBoxes[random - 1];
-
-                const mark = currentPlayer === 'x' ? 'o' : 'x';
-                box.dataset.mark = mark;
-
-                const cpu_x = box.querySelector(`.${styles.mark_x}`);
-                const cpu_o = box.querySelector(`.${styles.mark_o}`);
-
-                if (mark === 'x') {
-                    cpu_x.classList.add(styles.mark_display);
-
-                    setTimeout(() => {
-                        cpu_x.classList.add(styles.mark_fade_in);
-                    }, 1);
-                }
-
-                if (mark === 'o') {
-                    cpu_o.classList.add(styles.mark_display);
-
-                    setTimeout(() => {
-                        cpu_o.classList.add(styles.mark_fade_in);
-                    }, 1);
-                }
-
-                checkWinner(target.parentElement.children);
-
-                setPlay(true);
-            }, 500);
+            setTimeout(() => cpu_move_easy(), 500);
         }
     };
+
+    const cpu_move_easy = function () {
+        const boxes = [...document.querySelectorAll(`.${styles.box}`)];
+        const emptyBoxes = boxes.filter(box => !box.dataset.mark);
+        const length = emptyBoxes.length;
+        if (length === 0) return;
+
+        const random = Math.floor(Math.random() * length + 1);
+        const box = emptyBoxes[random - 1];
+        box.dataset.mark = player2;
+
+        const icon_x = box.querySelector(`.${styles.mark_x}`);
+        const icon_o = box.querySelector(`.${styles.mark_o}`);
+
+        if (player2 === 'x') {
+            icon_x?.classList.add(styles.mark_display);
+            setTimeout(() => icon_x?.classList.add(styles.mark_fade_in), 1);
+        }
+
+        if (player2 === 'o') {
+            icon_o?.classList.add(styles.mark_display);
+            setTimeout(() => icon_o?.classList.add(styles.mark_fade_in), 1);
+        }
+
+        setPlay(true);
+    };
+
+    const cpu_move_hard = function () {
+        return null;
+    };
+
+    useEffect(() => {
+        if (gameMode === '1' && cpuFirstMove === false && player2 === 'x') {
+            setPlay(false);
+            setTimeout(() => cpu_move_easy(), 500);
+            cpuFirstMove = true;
+        }
+    }, []);
 
     // // // // // // // // // // // // // // //
     // HOVER EVENTS
@@ -256,12 +209,22 @@ const Game = function (props) {
             if (target.dataset.mark) return;
             const img = target.querySelector('img');
 
-            img.src =
-                currentPlayer === 'x'
-                    ? assets.icon_x_outline
-                    : assets.icon_o_outline;
+            if (gameMode === '1') {
+                img.src =
+                    player1 === 'x'
+                        ? assets.icon_x_outline
+                        : assets.icon_o_outline;
+            }
+
+            if (gameMode === '2') {
+                img.src =
+                    currentPlayer === 'x'
+                        ? assets.icon_x_outline
+                        : assets.icon_o_outline;
+            }
+
             img.classList.add(styles.mark_hover_display);
-            setTimeout(() => img.classList.add(styles.mark_hover_show));
+            setTimeout(() => img.classList.add(styles.mark_hover_show), 1);
         }
     };
 
@@ -289,11 +252,13 @@ const Game = function (props) {
 
     // RESTART
     const restartGame = function () {
+        document.body.classList.remove(styles.overflow_hidden);
         props.restartGame();
     };
 
     // NEXT
     const nextRound = function () {
+        document.body.classList.remove(styles.overflow_hidden);
         document.querySelectorAll(`.${styles.box}`).forEach(box => {
             box.dataset.mark = '';
 
@@ -334,6 +299,8 @@ const Game = function (props) {
             setPrompt(
                 <Prompt
                     type="restart"
+                    icon={false}
+                    message={false}
                     title="Restart Game?"
                     cancel_text="No, Cancel"
                     restart_text="Yes, Restart"
@@ -346,6 +313,9 @@ const Game = function (props) {
         if (type === 'tie') {
             setPrompt(
                 <Prompt
+                    type={false}
+                    icon={false}
+                    message={false}
                     title="Round Tied"
                     cancel_text="Quit"
                     restart_text="Next Round"
@@ -362,9 +332,11 @@ const Game = function (props) {
 
             setPrompt(
                 <Prompt
-                    message={`Player ${num} Wins!`}
                     winner={winner}
+                    //
+                    type={false}
                     icon={winner === 'x' ? assets.icon_x : assets.icon_o}
+                    message={`Player ${num} Wins!`}
                     title="Takes the round"
                     cancel_text="Quit"
                     restart_text="Next Round"
@@ -377,8 +349,12 @@ const Game = function (props) {
 
     const handle_restart = () => handle_prompt('restart');
     const handle_tie = () => handle_prompt('tie');
+
     const handle_winner_x = () => handle_prompt('next', 'x');
     const handle_winner_o = () => handle_prompt('next', 'o');
+
+    const handle_you_win = () => handle_prompt();
+    const handle_cpu_win = () => handle_prompt();
 
     // // // // // // // // // // // // // // //
 
