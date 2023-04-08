@@ -14,6 +14,7 @@ const Game = function (props) {
     const [gameMode, setGameMode] = useState(state.gameMode);
     const [currentPlayer, setCurrentPlayer] = useState(state.currentPlayer);
     let cpuFirstMove = false;
+    let cpuFirstMove2 = false;
 
     const [score_x, setScore_x] = useState(0);
     const [score_o, setScore_o] = useState(0);
@@ -164,18 +165,45 @@ const Game = function (props) {
                 setTimeout(() => handle_you_win(player1), 500);
                 return;
             }
-            setTimeout(() => cpu_move_easy(), 500);
+            // setTimeout(() => cpu_move('easy), 500);
+            setTimeout(() => cpu_move('hard'), 500);
         }
     };
 
-    const cpu_move_easy = function () {
+    const cpu_move = function (mode) {
         const boxes = [...document.querySelectorAll(`.${styles.box}`)];
         const emptyBoxes = boxes.filter(box => !box.dataset.mark);
         const length = emptyBoxes.length;
         if (length === 0) return;
 
-        const random = Math.floor(Math.random() * length + 1);
-        const box = emptyBoxes[random - 1];
+        // // // // // // // // // // // // // // //
+        let box;
+
+        if (player2 === 'x' && cpuFirstMove2 === false) {
+            box = document.querySelectorAll(`.${styles.box}`)[4];
+        }
+
+        cpuFirstMove2 === true;
+
+        if (mode === 'easy') {
+            const random = Math.floor(Math.random() * length + 1);
+            box = emptyBoxes[random - 1];
+        }
+
+        // // // // // // // // // // // // // // //
+
+        if (mode === 'hard') {
+            const lines = ['1', '2', '3', '4', '5', '6', '7', '8'].map(num => {
+                return boxes.filter(t => t.classList.contains(num));
+            });
+
+            // TEMPORARY & EASY
+            const random = Math.floor(Math.random() * length + 1);
+            box = emptyBoxes[random - 1];
+        }
+
+        // // // // // // // // // // // // // // //
+
         box.dataset.mark = player2;
 
         const icon_x = box.querySelector(`.${styles.mark_x}`);
@@ -199,14 +227,10 @@ const Game = function (props) {
         setPlay(true);
     };
 
-    const cpu_move_hard = function () {
-        return null;
-    };
-
     useEffect(() => {
         if (gameMode === '1' && cpuFirstMove === false && player2 === 'x') {
             setPlay(false);
-            setTimeout(() => cpu_move_easy(), 500);
+            setTimeout(() => cpu_move('hard'), 500);
             cpuFirstMove = true;
         }
     }, []);
@@ -236,6 +260,7 @@ const Game = function (props) {
                 setTimeout(() => svg.classList.add(styles.mark_fade_in), 1);
 
                 cpuFirstMove = false;
+                cpuFirstMove2 = false;
             });
             return true;
         }
@@ -251,6 +276,7 @@ const Game = function (props) {
                 setTimeout(() => svg.classList.add(styles.mark_fade_in), 1);
 
                 cpuFirstMove = false;
+                cpuFirstMove2 = false;
             });
             return true;
         }
@@ -346,7 +372,7 @@ const Game = function (props) {
 
         if (gameMode === '1' && player2 === 'x') {
             setPlay(false);
-            setTimeout(() => cpu_move_easy(), 500);
+            setTimeout(() => cpu_move('hard'), 500);
         }
     };
 
