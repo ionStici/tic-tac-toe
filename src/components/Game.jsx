@@ -14,7 +14,6 @@ const Game = function (props) {
     const [gameMode, setGameMode] = useState(state.gameMode);
     const [currentPlayer, setCurrentPlayer] = useState(state.currentPlayer);
     let cpuFirstMove = false;
-    let cpuFirstMove2 = false;
 
     const [score_x, setScore_x] = useState(0);
     const [score_o, setScore_o] = useState(0);
@@ -179,12 +178,6 @@ const Game = function (props) {
         // // // // // // // // // // // // // // //
         let box;
 
-        if (player2 === 'x' && cpuFirstMove2 === false) {
-            box = document.querySelectorAll(`.${styles.box}`)[4];
-        }
-
-        cpuFirstMove2 === true;
-
         if (mode === 'easy') {
             const random = Math.floor(Math.random() * length + 1);
             box = emptyBoxes[random - 1];
@@ -197,9 +190,109 @@ const Game = function (props) {
                 return boxes.filter(t => t.classList.contains(num));
             });
 
-            // TEMPORARY & EASY
-            const random = Math.floor(Math.random() * length + 1);
-            box = emptyBoxes[random - 1];
+            // // // // // // // // // // // // // // //
+
+            const cpuBox = lines
+                .map(line => {
+                    return line.map(box => {
+                        if (box.dataset.mark === player2) return player2;
+                        if (box.dataset.mark === '') return box;
+                        if (box.dataset.mark === player1) return 'busy';
+                    });
+                })
+                .map(line => {
+                    return line.filter(box => {
+                        if (box?.dataset?.mark === '') return box;
+                        if (box === 'busy') return 'busy';
+                    });
+                })
+                .filter(line => {
+                    if (line.length === 1 && line[0] !== 'busy') return line;
+                })?.[0]?.[0];
+
+            // // // // // // // // // // // // // // //
+
+            const youBox = lines
+                .map(line => {
+                    return line.map(box => {
+                        if (box.dataset.mark === player1) return player1;
+                        if (box.dataset.mark === '') return box;
+                        if (box.dataset.mark === player2) return 'busy';
+                    });
+                })
+                .map(line => {
+                    return line.filter(box => {
+                        if (box?.dataset?.mark === '') return box;
+                        if (box === 'busy') return 'busy';
+                    });
+                })
+                .filter(line => {
+                    if (line.length === 1 && line[0] !== 'busy') return line;
+                })?.[0]?.[0];
+
+            // // // // // // // // // // // // // // //
+
+            const cpuBoxSecond = lines
+                .map(line => {
+                    return line.map(box => {
+                        if (box.dataset.mark === player2) return player2;
+                        if (box.dataset.mark === player1) return player2;
+                        if (box.dataset.mark === '') return box;
+                    });
+                })
+                .map(line => {
+                    return line.filter(box => {
+                        if (box?.dataset?.mark === '') return box;
+                    });
+                })
+                .filter(line => {
+                    if (line.length === 1 && line[0] !== player2) return line;
+                })?.[0]?.[0];
+
+            // // // // // // // // // // // // // // //
+            const middleBox = document.querySelectorAll(`.${styles.box}`)[4];
+
+            if (middleBox.dataset.mark === '') {
+                box = middleBox;
+            } else if (cpuBox) {
+                box = cpuBox;
+            } else if (youBox) {
+                box = youBox;
+            } else if (cpuBoxSecond) {
+                console.log(cpuBoxSecond);
+
+                let random;
+                random = Math.floor(Math.random() * length + 1);
+
+                let reference;
+                reference = emptyBoxes[random - 1];
+
+                const test1 = reference.classList.value
+                    .split(' ')
+                    .filter(num => num.length === 1);
+
+                const test2 = cpuBoxSecond.classList.value
+                    .split(' ')
+                    .filter(num => num.length === 1);
+
+                const check = (test1, test2) => {
+                    if (test1.length !== test2.length) return false;
+
+                    return test1.every((n, i) => {
+                        n === test2[i];
+                    });
+                };
+
+                while (check(test1, test2)) {
+                    random = Math.floor(Math.random() * length + 1);
+                    reference = emptyBoxes[random - 1];
+                }
+
+                box = reference;
+            } else {
+                const random = Math.floor(Math.random() * length + 1);
+                box = emptyBoxes[random - 1];
+            }
         }
 
         // // // // // // // // // // // // // // //
@@ -260,7 +353,6 @@ const Game = function (props) {
                 setTimeout(() => svg.classList.add(styles.mark_fade_in), 1);
 
                 cpuFirstMove = false;
-                cpuFirstMove2 = false;
             });
             return true;
         }
@@ -276,7 +368,6 @@ const Game = function (props) {
                 setTimeout(() => svg.classList.add(styles.mark_fade_in), 1);
 
                 cpuFirstMove = false;
-                cpuFirstMove2 = false;
             });
             return true;
         }
