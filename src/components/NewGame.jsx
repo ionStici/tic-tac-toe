@@ -37,6 +37,7 @@ const NewGame = function (props) {
         const easy = () => startNewGame({ target }, 'easy');
         const norm = () => startNewGame({ target }, 'norm');
         const hard = () => startNewGame({ target }, 'hard');
+        const closePrompt = () => setDifficultyPrompt('');
 
         setDifficultyPrompt(
             <DifficultyPrompt
@@ -44,6 +45,7 @@ const NewGame = function (props) {
                 easyEvent={easy}
                 normEvent={norm}
                 hardEvent={hard}
+                closePrompt={closePrompt}
             />
         );
     };
