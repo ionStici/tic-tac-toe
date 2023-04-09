@@ -143,6 +143,8 @@ const Game = function (props) {
             if (target.dataset.mark) return;
             target.dataset.mark = player1;
 
+            // // // // // // // // // // // // // // //
+
             const img = target.querySelector('img');
             img.classList.remove(styles.mark_hover_display);
             img.src = undefined;
@@ -162,6 +164,25 @@ const Game = function (props) {
 
             setPlay(false);
             const check = checkWinnerCPU();
+
+            // // // // // // // // // // // // // // //
+            // TURN ICON
+            if (!check) {
+                let turn_x = document.querySelector(`.${styles.turn_mark_x}`);
+                let turn_o = document.querySelector(`.${styles.turn_mark_o}`);
+
+                if (player1 === 'x') {
+                    turn_x.classList.add(styles.turn_mark_fade_out);
+                    turn_o.classList.remove(styles.turn_mark_fade_out);
+                }
+
+                if (player1 === 'o') {
+                    turn_x.classList.remove(styles.turn_mark_fade_out);
+                    turn_o.classList.add(styles.turn_mark_fade_out);
+                }
+            }
+            // // // // // // // // // // // // // // //
+
             if (check) {
                 setTimeout(() => handle_you_win(player1), 500);
                 return;
@@ -312,8 +333,6 @@ const Game = function (props) {
             }
         }
 
-        // // // // // // // // // // // // // // //
-
         const img = box.querySelector('img');
         img.classList.remove(styles.mark_hover_display);
         img.src = undefined;
@@ -333,7 +352,28 @@ const Game = function (props) {
             setTimeout(() => icon_o?.classList.add(styles.mark_fade_in), 1);
         }
 
+        // // // // // // // // // // // // // // //
+
         const check = checkWinnerCPU();
+
+        // // // // // // // // // // // // // // //
+        // TURN ICON
+        if (!check) {
+            let turn_x = document.querySelector(`.${styles.turn_mark_x}`);
+            let turn_o = document.querySelector(`.${styles.turn_mark_o}`);
+
+            if (player2 === 'o') {
+                turn_x.classList.remove(styles.turn_mark_fade_out);
+                turn_o.classList.add(styles.turn_mark_fade_out);
+            }
+
+            if (player2 === 'x') {
+                turn_x.classList.add(styles.turn_mark_fade_out);
+                turn_o.classList.remove(styles.turn_mark_fade_out);
+            }
+        }
+        // // // // // // // // // // // // // // //
+
         if (check) {
             setTimeout(() => handle_cpu_win(player2), 500);
             return;

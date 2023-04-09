@@ -8,7 +8,6 @@ const NewGame = function (props) {
     const [player1, setPlayer1] = useState('x');
     const [player2, setPlayer2] = useState('o');
 
-    const [difficulty, setDifficulty] = useState('');
     const [difficultyPrompt, setDifficultyPrompt] = useState('');
 
     const switchMark = function ({ target }) {
