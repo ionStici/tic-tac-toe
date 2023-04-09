@@ -1,15 +1,15 @@
 import { ButtonMain } from './Buttons';
 import styles from './../styles/NewGame.module.scss';
-import promptStyles from './../styles/Prompt.module.scss';
 import { assets } from '../assets/Assets';
 import { useState } from 'react';
-import Prompt from './Prompt';
+import DifficultyPrompt from './DifficultyPrompt';
 
 const NewGame = function (props) {
     const [player1, setPlayer1] = useState('x');
     const [player2, setPlayer2] = useState('o');
 
     const [difficulty, setDifficulty] = useState('');
+    const [difficultyPrompt, setDifficultyPrompt] = useState('');
 
     const switchMark = function ({ target }) {
         const marks = document.querySelectorAll(`.${styles.box}`);
@@ -35,13 +35,23 @@ const NewGame = function (props) {
     };
 
     const chooseGameDifficulty = ({ target }) => {
-        // startNewGame({ target }, 'easy');
-        // startNewGame({ target }, 'norm');
-        startNewGame({ target }, 'hard');
+        const easy = () => startNewGame({ target }, 'easy');
+        const norm = () => startNewGame({ target }, 'norm');
+        const hard = () => startNewGame({ target }, 'hard');
+
+        setDifficultyPrompt(
+            <DifficultyPrompt
+                title="Select Difficulty"
+                easyEvent={easy}
+                normEvent={norm}
+                hardEvent={hard}
+            />
+        );
     };
 
     return (
         <>
+            {difficultyPrompt}
             <section className={styles.section}>
                 <header className={styles.header}>
                     <img className={styles.logo} src={assets.logo} alt="Logo" />

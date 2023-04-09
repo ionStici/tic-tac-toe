@@ -314,6 +314,10 @@ const Game = function (props) {
 
         // // // // // // // // // // // // // // //
 
+        const img = box.querySelector('img');
+        img.classList.remove(styles.mark_hover_display);
+        img.src = undefined;
+
         box.dataset.mark = player2;
 
         const icon_x = box.querySelector(`.${styles.mark_x}`);
