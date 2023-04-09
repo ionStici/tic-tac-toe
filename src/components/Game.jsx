@@ -13,6 +13,8 @@ const Game = function (props) {
 
     const [gameMode, setGameMode] = useState(state.gameMode);
     const [currentPlayer, setCurrentPlayer] = useState(state.currentPlayer);
+
+    const [difficulty, setDifficulty] = useState(state.difficulty);
     let cpuFirstMove = false;
 
     const [score_x, setScore_x] = useState(0);
@@ -164,8 +166,8 @@ const Game = function (props) {
                 setTimeout(() => handle_you_win(player1), 500);
                 return;
             }
-            // setTimeout(() => cpu_move('easy), 500);
-            setTimeout(() => cpu_move('hard'), 500);
+
+            setTimeout(() => cpu_move(difficulty), 500);
         }
     };
 
@@ -185,7 +187,7 @@ const Game = function (props) {
 
         // // // // // // // // // // // // // // //
 
-        if (mode === 'hard') {
+        if (mode === 'hard' || mode === 'norm') {
             const lines = ['1', '2', '3', '4', '5', '6', '7', '8'].map(num => {
                 return boxes.filter(t => t.classList.contains(num));
             });
@@ -258,9 +260,7 @@ const Game = function (props) {
                 box = cpuBox;
             } else if (youBox) {
                 box = youBox;
-            } else if (cpuBoxSecond) {
-                console.log(cpuBoxSecond);
-
+            } else if (cpuBoxSecond && mode === 'hard') {
                 let random;
                 random = Math.floor(Math.random() * length + 1);
 
@@ -290,8 +290,25 @@ const Game = function (props) {
 
                 box = reference;
             } else {
-                const random = Math.floor(Math.random() * length + 1);
-                box = emptyBoxes[random - 1];
+                if (
+                    player1 === 'x' &&
+                    cpuFirstMove === false &&
+                    mode === 'hard'
+                ) {
+                    const random = Math.floor(Math.random() * 4);
+                    const boxes = [
+                        document.querySelectorAll(`.${styles.box}`)[0],
+                        document.querySelectorAll(`.${styles.box}`)[2],
+                        document.querySelectorAll(`.${styles.box}`)[6],
+                        document.querySelectorAll(`.${styles.box}`)[8],
+                    ];
+                    box = boxes[random];
+
+                    cpuFirstMove = true;
+                } else {
+                    const random = Math.floor(Math.random() * length + 1);
+                    box = emptyBoxes[random - 1];
+                }
             }
         }
 
@@ -323,7 +340,7 @@ const Game = function (props) {
     useEffect(() => {
         if (gameMode === '1' && cpuFirstMove === false && player2 === 'x') {
             setPlay(false);
-            setTimeout(() => cpu_move('hard'), 500);
+            setTimeout(() => cpu_move(difficulty), 500);
             cpuFirstMove = true;
         }
     }, []);
@@ -354,6 +371,7 @@ const Game = function (props) {
 
                 cpuFirstMove = false;
             });
+            updateScore('x');
             return true;
         }
 
@@ -369,7 +387,18 @@ const Game = function (props) {
 
                 cpuFirstMove = false;
             });
+            updateScore('o');
             return true;
+        }
+
+        const checkTie = boxes.every(box => {
+            if (box.dataset.mark === player1 || box.dataset.mark === player2)
+                return true;
+        });
+
+        if (checkTie) {
+            handle_tie();
+            updateScore('tie');
         }
     };
 
@@ -463,7 +492,7 @@ const Game = function (props) {
 
         if (gameMode === '1' && player2 === 'x') {
             setPlay(false);
-            setTimeout(() => cpu_move('hard'), 500);
+            setTimeout(() => cpu_move(difficulty), 500);
         }
     };
 
