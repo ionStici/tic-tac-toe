@@ -316,14 +316,24 @@ const Game = function (props) {
                     cpuFirstMove === false &&
                     mode === 'hard'
                 ) {
-                    const random = Math.floor(Math.random() * 4);
-                    const boxes = [
-                        document.querySelectorAll(`.${styles.box}`)[0],
-                        document.querySelectorAll(`.${styles.box}`)[2],
-                        document.querySelectorAll(`.${styles.box}`)[6],
-                        document.querySelectorAll(`.${styles.box}`)[8],
-                    ];
-                    box = boxes[random];
+                    const boxes = document.querySelectorAll(`.${styles.box}`);
+
+                    const getMark = box => {
+                        if (box.dataset.mark === '') return true;
+                    };
+
+                    const cornerBoxes = [
+                        getMark(boxes[0]) ? boxes[0] : undefined,
+                        getMark(boxes[2]) ? boxes[2] : undefined,
+                        getMark(boxes[6]) ? boxes[6] : undefined,
+                        getMark(boxes[8]) ? boxes[8] : undefined,
+                    ].filter(box => box);
+
+                    const random = Math.floor(
+                        Math.random() * cornerBoxes.length
+                    );
+
+                    box = cornerBoxes[random];
 
                     cpuFirstMove = true;
                 } else {
